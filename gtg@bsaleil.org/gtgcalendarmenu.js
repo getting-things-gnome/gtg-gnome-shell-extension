@@ -9,13 +9,14 @@ const Extension = ExtensionUtils.getCurrentExtension();
 const GTGDBus = Extension.imports.gtgdbus;
 const Calendar = imports.ui.calendar;
 
-var allTasks;
-var running;
-var actors;
+var allTasks;	// array : Contains all the tasks
+var running;	// bool : GTG is running
+var actors;	// array : Contains actual actors in calendar menu
 
 // TODO : Add multiple days tasks (On other block?)
 // TODO : Write script for import data from gnome-shell
 // TODO : Fix hover bug
+// TODO : Display state of GTG when closed
 
 const GTGCalendarMenu = new Lang.Class({
 	Name: 'GTGCalendarMenu',
