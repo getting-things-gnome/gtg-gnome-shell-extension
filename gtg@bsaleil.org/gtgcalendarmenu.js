@@ -17,6 +17,7 @@ var actors;	// array : Contains actual actors in calendar menu
 // TODO : Write script for import data from gnome-shell
 // TODO : Fix hover bug
 // TODO : Display state of GTG when closed
+// TODO : New menu for no-dates tasks ?
 
 const GTGCalendarMenu = new Lang.Class({
 	Name: 'GTGCalendarMenu',
