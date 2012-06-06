@@ -45,19 +45,10 @@ const GTGCalendarMenu = new Lang.Class({
 			function() { running=true; loadTasks(); },
 			function() { running=false; loadTasks(); });
 		
-		function getChildByName (a_parent, name) {
-			return a_parent.get_children().filter(
-			function(elem){
-			return elem.name == name
-			})[0];
-		}
 		
-		// Vertical separator
+		// First separator
 		let calendar = getChildByName(Main.panel._dateMenu.menu.box, 'calendarArea');
-		separator = new St.DrawingArea({style_class: 'calendar-vertical-separator',
-		pseudo_class: 'highlighted' });
-		separator.connect('repaint', Lang.bind(this, onVertSepRepaint));
-		calendar.add_actor(separator);
+		this.addSeparator(calendar);
 		
 		// Main box
 		this.mainBox = new St.BoxLayout();
@@ -92,6 +83,14 @@ const GTGCalendarMenu = new Lang.Class({
         	}));
         	
         	
+	},
+	
+	addSeparator : function(calendar)
+	{
+		separator = new St.DrawingArea({style_class: 'calendar-vertical-separator',
+		pseudo_class: 'highlighted' });
+		separator.connect('repaint', Lang.bind(this, onVertSepRepaint));
+		calendar.add_actor(separator);
 	},
 	
 	// New date selected in the calendar
@@ -218,6 +217,16 @@ const GTGCalendarMenu = new Lang.Class({
 		Main.panel._dateMenu.menu.close();
 	}
 });
+
+// TODO
+function getChildByName (a_parent, name) 
+{
+	return a_parent.get_children().filter(
+	function(elem)
+	{
+		return elem.name == name
+	})[0];
+}
 
 // Hide existing calendar menu
 function hideSystemTasksList()
