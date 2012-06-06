@@ -16,7 +16,6 @@ var actors;	// array : Contains actual actors in calendar menu
 // TODO : Add multiple days tasks (On other block?)
 // TODO : Write script for import data from gnome-shell
 // TODO : Fix hover bug
-// TODO : Display state of GTG when closed
 // TODO : New menu for no-dates tasks ?
 
 const GTGCalendarMenu = new Lang.Class({
@@ -101,13 +100,13 @@ const GTGCalendarMenu = new Lang.Class({
 		this.removeActors();
 		
 		this.displayTasksForDay(day);
-		
+	
 		let today = new Date();
 		if (this.sameDay(day,today))
 		{
 			let tomorrow = new Date(day.getTime() + 86400000);
 			this.displayTasksForDay(tomorrow);
-		}		
+		}
 	},
 	
 	// Display tasks for given day
@@ -138,23 +137,28 @@ const GTGCalendarMenu = new Lang.Class({
 		actors.push(title);
 		
 		// Day tasks
-		var nbTasks = 0;
-		for (i=0; i<allTasks.length; i++)
+		if (!running)
 		{
-			let ret = allTasks[i].startdate;
-			ret = ret.split('-');
-			let taskDate = new Date(ret[0],ret[1]-1,ret[2]);
-					
-			if (this.sameDay(day,taskDate))
-			{
-				nbTasks++;
-				this.displayTask(allTasks[i]);
-			}
+			this.displayBlockedItem("GTG is closed");
 		}
-		
-		if (nbTasks < 1)
-			this.displayNothing();
-		
+		else
+		{
+			var nbTasks = 0;
+			for (i=0; i<allTasks.length; i++)
+			{
+				let ret = allTasks[i].startdate;
+				ret = ret.split('-');
+				let taskDate = new Date(ret[0],ret[1]-1,ret[2]);
+				
+				if (this.sameDay(day,taskDate))
+				{
+					nbTasks++;
+					this.displayTask(allTasks[i]);
+				}
+			}
+			if (nbTasks < 1)
+				this.displayBlockedItem("Nothing Scheduled");
+		}		
 	},
 	
 	// Display a task on the menu
@@ -176,14 +180,14 @@ const GTGCalendarMenu = new Lang.Class({
 		actors.push(taskItem);
 	},
 	
-	// Display "nothing scheduled" string
-	displayNothing: function()
+	// Display a blocked item (non-clickable) with given string
+	displayBlockedItem: function(title)
 	{
-		let nothingItem = new PopupMenu.PopupMenuItem("Nothing Scheduled",{reactive: false});
-		nothingItem.actor.set_style("padding-left:50px");
-		nothingItem.actor.add_style_class_name("task");
-		this.tasksBox.add(nothingItem.actor,{y_align: St.Align.START,y_fill: false});
-		actors.push(nothingItem);
+		let item = new PopupMenu.PopupMenuItem(title,{reactive:false});
+		item.actor.set_style("padding-left:50px");
+		item.actor.add_style_class_name("task");
+		this.tasksBox.add(item.actor,{y_align: St.Align.START,y_fill: false});		
+		actors.push(item);
 	},
 	
 	// Compare two days
