@@ -46,7 +46,7 @@ const GTGCalendarMenu = new Lang.Class({
 			function() { running=false; loadTasks(); });
 		
 		
-		// First separator
+		// Vertical separator
 		let calendar = getChildByName(Main.panel._dateMenu.menu.box, 'calendarArea');
 		this.addSeparator(calendar);
 		
@@ -218,7 +218,7 @@ const GTGCalendarMenu = new Lang.Class({
 	}
 });
 
-// TODO
+// Get child with given parent and name
 function getChildByName (a_parent, name) 
 {
 	return a_parent.get_children().filter(
