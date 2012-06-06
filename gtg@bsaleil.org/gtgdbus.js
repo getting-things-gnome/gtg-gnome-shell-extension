@@ -7,7 +7,8 @@ const GTGIFace =
     methods: 
     [
     	{ name: 'GetActiveTasks', inSignature: 'as', outSIgnature: 'aa{sv}' },
-	{ name: 'OpenTaskEditor', inSignature: 's', outSignature: '' }
+	{ name: 'OpenTaskEditor', inSignature: 's', outSignature: '' },
+	{ name: 'ShowTaskBrowser', inSignature: '', outSignature: ''}
     ],
     signals:
     [

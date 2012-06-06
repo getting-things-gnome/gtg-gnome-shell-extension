@@ -1,10 +1,13 @@
 const Main = imports.ui.main;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Extension = ExtensionUtils.getCurrentExtension();
+
 const GTGSearchProvider = Extension.imports.gtgsearchprovider;
+const GTGCalendarMenu = Extension.imports.gtgcalendarmenu;
 
 // Search provider instance
 var GTGSPInstance = null;
+var GTGCMInstance = null;
 
 function init(meta) {}
 
@@ -16,6 +19,8 @@ function enable()
 	{
 		GTGSPInstance = new GTGSearchProvider.GTGSearchProvider();
 		Main.overview.addSearchProvider(GTGSPInstance);
+		
+		GTGCMInstance = new GTGCalendarMenu.GTGCalendarMenu();
 	}
 }
 
@@ -28,5 +33,7 @@ function disable()
 		Main.overview.removeSearchProvider(GTGSPInstance);
 		GTGSPInstance.destroy();
 		GTGSPInstance = null;
+		
+		GTGCMInstance = null;
 	}
 }

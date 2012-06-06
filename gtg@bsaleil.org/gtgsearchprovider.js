@@ -36,7 +36,7 @@ const GTGSearchProvider = new Lang.Class({
 		
 		// Watch GTG state
 		GTGDBus.DBus.session.watch_name("org.gnome.GTG", false,
-			function() { global.log('apparait'); running=true; loadTasks(); },
+			function() { running=true; loadTasks(); },
 			function() { running=false; loadTasks(); });
 		
 		return true;
