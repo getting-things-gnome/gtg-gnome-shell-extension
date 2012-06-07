@@ -87,10 +87,10 @@ const GTGCalendarMenu = new Lang.Class({
 	
 	addSeparator : function(calendar)
 	{
-		separator = new St.DrawingArea({style_class: 'calendar-vertical-separator',
+		this.separator = new St.DrawingArea({style_class: 'calendar-vertical-separator',
 		pseudo_class: 'highlighted' });
-		separator.connect('repaint', Lang.bind(this, onVertSepRepaint));
-		calendar.add_actor(separator);
+		this.separator.connect('repaint', Lang.bind(this, onVertSepRepaint));
+		calendar.add_actor(this.separator);
 	},
 	
 	// New date selected in the calendar
@@ -215,6 +215,22 @@ const GTGCalendarMenu = new Lang.Class({
 			Util.spawn(['gtg']);
 		
 		Main.panel._dateMenu.menu.close();
+	}
+	
+	// Destroy calendar menu
+	destroy: function()
+	{
+		this.mainBox.destroy();
+		this.separator.destroy();
+		GTGDBus.GTGProxy.disconnect(this.addedSignal);
+		GTGDBus.GTGProxy.disconnect(this.modifiedSignal);
+		GTGDBus.GTGProxy.disconnect(this.deletedTask);
+		
+		let planning = Main.panel._dateMenu._eventList.actor.get_parent();
+		items = planning.get_parent().get_children();
+		index = items.indexOf(planning);
+		items[index].show()
+		items[(index == 0) ? index+1 : index-1].show()
 	}
 });
 

@@ -34,6 +34,7 @@ function disable()
 		GTGSPInstance.destroy();
 		GTGSPInstance = null;
 		
+		GTGCMInstance.destroy();
 		GTGCMInstance = null;
 	}
 }
