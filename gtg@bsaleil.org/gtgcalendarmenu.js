@@ -215,7 +215,7 @@ const GTGCalendarMenu = new Lang.Class({
 			Util.spawn(['gtg']);
 		
 		Main.panel._dateMenu.menu.close();
-	}
+	},
 	
 	// Destroy calendar menu
 	destroy: function()
