@@ -12,9 +12,9 @@ const GTGDBus = Extension.imports.gtgdbus;
 // TODO : scrollbar ?
 // TODO : prefs timer seconds
 
-var actors; // array : Contains actual actors in todo menu
-var CMopened;
-var timerActive;
+var actors; 	// array : Contains actual actors in todo menu
+var CMopened;	// bool  : Calendar menu is opened
+var timerActive;	// bool	: Timer is active
 
 const GTGTodoMenu = new Lang.Class({
 	Name: 'GTGTodoMenu',
@@ -23,7 +23,6 @@ const GTGTodoMenu = new Lang.Class({
 	{
 		timerActive = true;
 		actors = [];
-		actualState = GTGCalendarMenu.running;
 		
 		// Vertical separator
 		let calendar = getChildByName(Main.panel._dateMenu.menu.box, 'calendarArea');
@@ -34,7 +33,7 @@ const GTGTodoMenu = new Lang.Class({
 		this.todoBox.set_vertical(true);
 		calendar.add_actor(this.todoBox, {expand: true});
 		
-		//global.log(GTGCalendarMenu.allTasks.length);
+		// Start the timer
 		this.refresh();
 		
 		// Menu opened - closed
@@ -54,20 +53,16 @@ const GTGTodoMenu = new Lang.Class({
 		calendar.add_actor(this.separator);
 	},
 	
-	// Destroy calendar menu
-	destroy: function()
-	{
-		this.separator.destroy();
-	},
-	
 	refresh: function()
 	{
 		// If the calendar menu is closed
 		if (!CMopened)
 		{
+			// Remove actual actors
 			for (i=0; i<actors.length; i++)
 				this.todoBox.remove_actor(actors[i].actor);
 	
+			// Display tasks only if gtg is running
 			if (!GTGCalendarMenu.running)
 			{
 				this.displayBlockedItem("GTG is closed");
@@ -76,11 +71,13 @@ const GTGTodoMenu = new Lang.Class({
 			{
 				tasks = GTGCalendarMenu.allTasks;
 	
+				// Display all tasks without start and due date
 				for (i=0; i<tasks.length; i++)
 					if (tasks[i].startdate == "" && tasks[i].duedate == "")
 						this.displayTodo(tasks[i]);
 			}
 		}
+		// Stop the timer if extension diabled
 		if (timerActive)
 			this.timeout = Mainloop.timeout_add_seconds(1, Lang.bind(this, this.refresh));
 	},
@@ -93,6 +90,7 @@ const GTGTodoMenu = new Lang.Class({
 		actors.push(item);
 	},
 	
+	// Display a task
 	displayTodo: function(task)
 	{
 		let title = task.title;
@@ -105,6 +103,7 @@ const GTGTodoMenu = new Lang.Class({
 		actors.push(item);
 	},
 	
+	// Destroy items
 	destroy: function()
 	{
 		timerActive = false;
