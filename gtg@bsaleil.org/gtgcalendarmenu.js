@@ -17,6 +17,7 @@ var actors;	// array : Contains actual actors in calendar menu
 // TODO : Write script for import data from gnome-shell
 // TODO : Fix hover bug
 // TODO : New menu for no-dates tasks ?
+// TODO : Create gtg utils file
 
 const GTGCalendarMenu = new Lang.Class({
 	Name: 'GTGCalendarMenu',
@@ -68,6 +69,11 @@ const GTGCalendarMenu = new Lang.Class({
 		        expand: true,
 		        y_fill: false});
 		this.gtgButton.connect('activate', this.openGTG);
+		
+		// Todo list box
+		this.todoBox = new St.BoxLayout();
+		this.todoBox.set_vertical(true);
+		calendar.add_actor(this.todoBox, {expand: true});
 		
 		// New date selected
 		Main.panel._dateMenu._calendar.connect('selected-date-changed', Lang.bind(this,
@@ -172,8 +178,6 @@ const GTGCalendarMenu = new Lang.Class({
 			GTGDBus.openTaskEditor(task.id);
 			Main.panel._dateMenu.menu.close();
 		});
-		
-		
 		
 		this.tasksBox.add(taskItem.actor,{y_align: St.Align.START,y_fill: false});
 		actors.push(taskItem);
