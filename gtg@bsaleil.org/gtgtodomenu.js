@@ -86,6 +86,7 @@ const GTGTodoMenu = new Lang.Class({
 	displayBlockedItem: function(title)
 	{
 		let item = new PopupMenu.PopupMenuItem(title,{reactive:false});
+		item.actor.add_style_class_name("task");
 		this.todoBox.add(item.actor,{y_align: St.Align.START,y_fill: false});		
 		actors.push(item);
 	},
@@ -95,6 +96,7 @@ const GTGTodoMenu = new Lang.Class({
 	{
 		let title = task.title;
 		let item = new PopupMenu.PopupMenuItem(title);
+		item.actor.add_style_class_name("task");
 		item.connect('activate', function() {
 			GTGDBus.openTaskEditor(task.id);
 			Main.panel._dateMenu.menu.close();
