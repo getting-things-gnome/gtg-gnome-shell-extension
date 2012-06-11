@@ -10,36 +10,48 @@ const GTGCalendarMenu = Extension.imports.gtgcalendarmenu;
 const GTGDBus = Extension.imports.gtgdbus;
 
 // TODO : scrollbar ?
-// TODO : prefs timer seconds
 
-var actors; 	// array : Contains actual actors in todo menu
-var CMopened;	// bool  : Calendar menu is opened
-var timerActive;	// bool	: Timer is active
+var allTasks;	// array : Contains all the tasks
+var running;	// bool : GTG is running
+var actors;	// array : Contains actual actors in calendar menu
 
 const GTGTodoMenu = new Lang.Class({
 	Name: 'GTGTodoMenu',
 
 	_init: function()
 	{
-		timerActive = true;
+		// Load tasks
+		allTasks = new Array();
+		loadTasks();
+		running = false;
 		actors = [];
+		
+		// Signals
+		this.addedSignal = GTGDBus.GTGProxy.connect('TaskAdded',
+			function(sender, tid) { loadTasks(); });
+		this.modifiedSignal = GTGDBus.GTGProxy.connect('TaskModified',
+			function(sender, tid) { loadTasks(); });
+    		this.deletedTask = GTGDBus.GTGProxy.connect('TaskDeleted',
+    			function(sender, tid) { loadTasks(); });
+    		
+    		// Watch GTG state
+		GTGDBus.DBus.session.watch_name("org.gnome.GTG", false,
+			function() { running=true; loadTasks(); },
+			function() { running=false; loadTasks(); });
 		
 		// Vertical separator
 		let calendar = getChildByName(Main.panel._dateMenu.menu.box, 'calendarArea');
 		this.addSeparator(calendar);
 		
-		// Main box
+		// Todo box
 		this.todoBox = new St.BoxLayout();
 		this.todoBox.set_vertical(true);
 		calendar.add_actor(this.todoBox, {expand: true});
 		
-		// Start the timer
-		this.refresh();
-		
-		// Menu opened - closed
+		// If calendar menu is open, display todos
         	Main.panel._dateMenu.menu.connect('open-state-changed', Lang.bind(this,
 		function(menu, isOpen) {
-			CMopened = isOpen;
+			if (isOpen) this.displayTodos();
         	}));
 	},
 	
@@ -53,33 +65,25 @@ const GTGTodoMenu = new Lang.Class({
 		calendar.add_actor(this.separator);
 	},
 	
-	refresh: function()
+	displayTodos: function()
 	{
-		// If the calendar menu is closed
-		if (!CMopened)
+		global.log(running);
+		// Remove actual actors
+		for (i=0; i<actors.length; i++)
+			this.todoBox.remove_actor(actors[i].actor);
+
+		// Display tasks only if gtg is running
+		if (!running)
 		{
-			// Remove actual actors
-			for (i=0; i<actors.length; i++)
-				this.todoBox.remove_actor(actors[i].actor);
-	
-			// Display tasks only if gtg is running
-			if (!GTGCalendarMenu.running)
-			{
-				this.displayBlockedItem("GTG is closed");
-			}
-			else
-			{
-				tasks = GTGCalendarMenu.allTasks;
-	
-				// Display all tasks without start and due date
-				for (i=0; i<tasks.length; i++)
-					if (tasks[i].startdate == "" && tasks[i].duedate == "")
-						this.displayTodo(tasks[i]);
-			}
+			this.displayBlockedItem("GTG is closed");
 		}
-		// Stop the timer if extension diabled
-		if (timerActive)
-			this.timeout = Mainloop.timeout_add_seconds(1, Lang.bind(this, this.refresh));
+		else
+		{	
+			// Display all tasks without start and due date
+			for (i=0; i<allTasks.length; i++)
+				if (allTasks[i].startdate == "" && allTasks[i].duedate == "")
+					this.displayTodo(allTasks[i]);
+		}
 	},
 	
 	// Display a blocked item (non-clickable) with given string
@@ -140,4 +144,20 @@ function getChildByName (a_parent, name)
 	{
 		return elem.name == name
 	})[0];
+}
+
+// Load tasks in "alltasks"
+function loadTasks()
+{	
+	// If gtg is running
+	if (running)
+	{
+		GTGDBus.getActiveTasks(['@all'], function (tasks) {
+		allTasks = new Array();
+		for (var i in tasks) {
+		    allTasks.push(tasks[i]);
+		}
+		});
+	}
+	else { allTasks = new Array(); }
 }

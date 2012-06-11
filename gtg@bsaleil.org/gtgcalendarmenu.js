@@ -16,7 +16,6 @@ var actors;	// array : Contains actual actors in calendar menu
 // TODO : Add multiple days tasks (On other block?)
 // TODO : Write script for import data from gnome-shell
 // TODO : Fix hover bug
-// TODO : New menu for no-dates tasks ?
 // TODO : Create gtg utils file
 
 const GTGCalendarMenu = new Lang.Class({
