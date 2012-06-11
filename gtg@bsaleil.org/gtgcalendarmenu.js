@@ -16,7 +16,8 @@ var actors;	// array : Contains actual actors in calendar menu
 // TODO : Write script for import data from gnome-shell
 // TODO : Fix hover bug
 // TODO : Create gtg utils file ?
-// TODO : add now, soon, someday support 
+// TODO : add now, soon, someday support
+// TODO : hide too long names (xxx...)
 
 const GTGCalendarMenu = new Lang.Class({
 	Name: 'GTGCalendarMenu',
