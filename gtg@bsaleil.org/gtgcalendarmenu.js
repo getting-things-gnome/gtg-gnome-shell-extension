@@ -13,10 +13,10 @@ var allTasks;	// array : Contains all the tasks
 var running;	// bool : GTG is running
 var actors;	// array : Contains actual actors in calendar menu
 
-// TODO : Add multiple days tasks (On other block?)
 // TODO : Write script for import data from gnome-shell
 // TODO : Fix hover bug
-// TODO : Create gtg utils file
+// TODO : Create gtg utils file ?
+// TODO : add now, soon, someday support 
 
 const GTGCalendarMenu = new Lang.Class({
 	Name: 'GTGCalendarMenu',
@@ -69,11 +69,6 @@ const GTGCalendarMenu = new Lang.Class({
 		        y_fill: false});
 		this.gtgButton.connect('activate', this.openGTG);
 		
-		// Todo list box
-		this.todoBox = new St.BoxLayout();
-		this.todoBox.set_vertical(true);
-		calendar.add_actor(this.todoBox, {expand: true});
-		
 		// New date selected
 		Main.panel._dateMenu._calendar.connect('selected-date-changed', Lang.bind(this,
 		function(calendar, date) {
@@ -99,8 +94,11 @@ const GTGCalendarMenu = new Lang.Class({
 	},
 	
 	// New date selected in the calendar
-	dateChanged: function(day)
+	dateChanged: function(d)
 	{
+		// Remove hour
+		let day = new Date(d.getFullYear(),d.getMonth(),d.getDate());
+	
 		this.removeActors();
 		
 		this.displayTasksForDay(day);
@@ -150,14 +148,49 @@ const GTGCalendarMenu = new Lang.Class({
 			var nbTasks = 0;
 			for (i=0; i<allTasks.length; i++)
 			{
-				let ret = allTasks[i].startdate;
-				ret = ret.split('-');
-				let taskDate = new Date(ret[0],ret[1]-1,ret[2]);
+				let ret = allTasks[i].startdate.split('-');
+				let startDate = new Date(ret[0],ret[1]-1,ret[2]);
 				
-				if (this.sameDay(day,taskDate))
+				// If start date == day selected, display on first block
+				if (this.compareDays(day,startDate) == 0)
 				{
 					nbTasks++;
-					this.displayTask(allTasks[i]);
+					this.displayTask(allTasks[i],false);
+				}
+			}
+			
+			for (i=0; i<allTasks.length; i++)
+			{
+				let ret = allTasks[i].startdate.split('-');
+				let startDate = new Date(ret[0],ret[1]-1,ret[2]);
+				ret = allTasks[i].duedate.split('-');
+				let dueDate = new Date(ret[0],ret[1]-1,ret[2]);
+			
+				// Display multiple days tasks with start date
+				if (this.compareDays(startDate,day) == -1)
+				{
+					if (!this.validDay(dueDate))
+					{
+						nbTasks++;
+						this.displayTask(allTasks[i],true);
+					}
+					else if (this.validDay(dueDate)
+						&& this.compareDays(dueDate,day) != -1)
+					{
+						nbTasks++;
+						this.displayTask(allTasks[i],true);
+					}
+				}
+				
+				// Display multiple days tasks without start date
+				else if (!this.validDay(startDate))
+				{
+					if (this.validDay(dueDate)
+						&& this.compareDays(dueDate,day) != -1)
+					{
+						nbTasks++;
+						this.displayTask(allTasks[i],true);
+					}
 				}
 			}
 			if (nbTasks < 1)
@@ -166,17 +199,21 @@ const GTGCalendarMenu = new Lang.Class({
 	},
 	
 	// Display a task on the menu
-	displayTask: function(task)
+	displayTask: function(task,multipleDayTask)
 	{
 		strTask = task.title;
 		let taskItem = new PopupMenu.PopupMenuItem(strTask);
 		taskItem.actor.set_style("padding-left:50px;");
-		taskItem.actor.add_style_class_name("task");
 		
 		taskItem.connect('activate', function() {
 			GTGDBus.openTaskEditor(task.id);
 			Main.panel._dateMenu.menu.close();
 		});
+		
+		if (multipleDayTask)
+			taskItem.actor.add_style_class_name("multipleDayTask");
+		else
+			taskItem.actor.add_style_class_name("task");
 		
 		this.tasksBox.add(taskItem.actor,{y_align: St.Align.START,y_fill: false});
 		actors.push(taskItem);
@@ -197,7 +234,20 @@ const GTGCalendarMenu = new Lang.Class({
 	{
 		return (day1.getDate() == day2.getDate() &&
 		    	day1.getMonth() == day2.getMonth() &&
-		    	day1.getYear() == day2.getYear())
+		    	day1.getYear() == day2.getYear());
+	},
+
+	// Compare two days : 0 if ==, 1 if >, -1 if <	  
+	compareDays: function (day1, day2)
+	{
+		diff = day1.getTime()-day2.getTime();
+		return (diff==0?diff:diff/Math.abs(diff));
+	},
+	
+	// true if valid day, false if not
+	validDay: function(day)
+	{
+		return !isNaN(day.getTime());
 	},
 	
 	// Remove existings actors from the menu

@@ -67,7 +67,6 @@ const GTGTodoMenu = new Lang.Class({
 	
 	displayTodos: function()
 	{
-		global.log(running);
 		// Remove actual actors
 		for (i=0; i<actors.length; i++)
 			this.todoBox.remove_actor(actors[i].actor);
@@ -80,9 +79,15 @@ const GTGTodoMenu = new Lang.Class({
 		else
 		{	
 			// Display all tasks without start and due date
+			var nbTasks = 0;
 			for (i=0; i<allTasks.length; i++)
 				if (allTasks[i].startdate == "" && allTasks[i].duedate == "")
+				{
 					this.displayTodo(allTasks[i]);
+					nbTasks++;
+				}
+			if (nbTasks < 1)
+				this.displayBlockedItem("Nothing");
 		}
 	},
 	

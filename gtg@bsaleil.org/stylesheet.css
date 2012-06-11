@@ -7,9 +7,14 @@
 
 .task
 {
-	padding: 100px 100px;
 	font-size : 12px;
-	color : #979797;
+	color : #b0b0b0; /* system : #979797 */
+}
+
+.multipleDayTask
+{
+	font-size : 12px;
+	color : #5e5e5e;
 }
 
 .mainBox
