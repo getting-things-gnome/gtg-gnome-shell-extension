@@ -1,0 +1,5 @@
+#! /bin/bash
+
+cd ../gtg@bsaleil.org/locale
+
+for lang in ./* ; do msgfmt ./$lang/LC_MESSAGES/$lang.po -o ./$lang/LC_MESSAGES/gtgextension.mo ; done
