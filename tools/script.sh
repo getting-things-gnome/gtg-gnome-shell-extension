@@ -15,6 +15,7 @@ open="msgid \"Open\"";
 date="msgid \"%A, %B %d\"";
 today="msgid \"Today\"";
 tomorrow="msgid \"Tomorrow\"";
+nothing="msgid \"Nothing Scheduled\"";
 
 closed="msgid \"GTG is closed\"";
 strClosed="msgstr \"GTG is closed\"";
@@ -34,7 +35,7 @@ do
 			# Read all strings of a file
 			while read line  
 			do   
-				res=$(echo -e "$line\n"  | grep "$open\|$date\|$today\|$tomorrow");
+				res=$(echo -e "$line\n"  | grep "$open\|$date\|$today\|$tomorrow\|$nothing");
 				# If pattern found, add to destFile
 				if [ ${#res} != 0 ]
 					then
