@@ -1,0 +1,17 @@
+msgid "Nothing Scheduled"
+msgstr "بدون برنامه‌ریزی"
+
+msgid "%A, %B %d"
+msgstr "%A %Od %B "
+
+msgid "Today"
+msgstr "امروز"
+
+msgid "Tomorrow"
+msgstr "فردا"
+
+msgid "Open GTG"
+msgstr "بازکردن GTG"
+
+msgid "GTG is closed"
+msgstr "GTG is closed"

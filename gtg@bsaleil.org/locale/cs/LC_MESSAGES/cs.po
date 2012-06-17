@@ -1,0 +1,17 @@
+msgid "Nothing Scheduled"
+msgstr "Nic nenaplánováno"
+
+msgid "%A, %B %d"
+msgstr "%A, %e. %B"
+
+msgid "Today"
+msgstr "Dnes"
+
+msgid "Tomorrow"
+msgstr "Zítra"
+
+msgid "Open GTG"
+msgstr "Otevřít GTG"
+
+msgid "GTG is closed"
+msgstr "GTG is closed"

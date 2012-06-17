@@ -1,0 +1,17 @@
+msgid "Nothing Scheduled"
+msgstr "Ezer ez antolatuta"
+
+msgid "%A, %B %d"
+msgstr "%A, %B %d"
+
+msgid "Today"
+msgstr "Gaur"
+
+msgid "Tomorrow"
+msgstr "Bihar"
+
+msgid "Open GTG"
+msgstr "Ireki GTG"
+
+msgid "GTG is closed"
+msgstr "GTG is closed"

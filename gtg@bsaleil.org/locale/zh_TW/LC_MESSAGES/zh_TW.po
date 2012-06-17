@@ -1,0 +1,17 @@
+msgid "Nothing Scheduled"
+msgstr "沒有預訂行程"
+
+msgid "%A, %B %d"
+msgstr "%m月%d日%A"
+
+msgid "Today"
+msgstr "今天"
+
+msgid "Tomorrow"
+msgstr "明天"
+
+msgid "Open GTG"
+msgstr "開啟 GTG"
+
+msgid "GTG is closed"
+msgstr "GTG is closed"

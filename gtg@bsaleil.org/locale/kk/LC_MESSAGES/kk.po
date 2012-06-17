@@ -1,0 +1,17 @@
+msgid "Nothing Scheduled"
+msgstr "Жоспар бос"
+
+msgid "%A, %B %d"
+msgstr "%A, %B %d"
+
+msgid "Today"
+msgstr "Бүгін"
+
+msgid "Tomorrow"
+msgstr "Ертен"
+
+msgid "Open GTG"
+msgstr "Ашу GTG"
+
+msgid "GTG is closed"
+msgstr "GTG is closed"

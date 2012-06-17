@@ -1,0 +1,17 @@
+msgid "Nothing Scheduled"
+msgstr "Tiada yang Dijadualkan"
+
+msgid "%A, %B %d"
+msgstr "%A, %d %B"
+
+msgid "Today"
+msgstr "Hari ini"
+
+msgid "Tomorrow"
+msgstr "Esok"
+
+msgid "Open GTG"
+msgstr "Buka GTG"
+
+msgid "GTG is closed"
+msgstr "GTG is closed"

@@ -1,0 +1,17 @@
+msgid "Nothing Scheduled"
+msgstr "ਕੋਈ ਵੀ ਸੈਡਿਊਲ ਨਹੀਂ ਹੈ"
+
+msgid "%A, %B %d"
+msgstr "%A, %d %B"
+
+msgid "Today"
+msgstr "ਅੱਜ"
+
+msgid "Tomorrow"
+msgstr "ਭਲਕ"
+
+msgid "Open GTG"
+msgstr "ਖੋਲ੍ਹੋ GTG"
+
+msgid "GTG is closed"
+msgstr "GTG is closed"

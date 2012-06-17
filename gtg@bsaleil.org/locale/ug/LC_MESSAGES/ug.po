@@ -1,0 +1,17 @@
+msgid "Nothing Scheduled"
+msgstr "ھېچنېمە پىلانلانمىدى"
+
+msgid "%A, %B %d"
+msgstr "%A، %B %d"
+
+msgid "Today"
+msgstr "بۈگۈن"
+
+msgid "Tomorrow"
+msgstr "ئەتە"
+
+msgid "Open GTG"
+msgstr "ئاچ GTG"
+
+msgid "GTG is closed"
+msgstr "GTG is closed"

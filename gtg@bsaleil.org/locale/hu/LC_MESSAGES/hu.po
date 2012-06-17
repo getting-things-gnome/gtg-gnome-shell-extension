@@ -1,0 +1,17 @@
+msgid "Nothing Scheduled"
+msgstr "Semmi sincs ütemezve"
+
+msgid "%A, %B %d"
+msgstr "%A, %B %d."
+
+msgid "Today"
+msgstr "Ma"
+
+msgid "Tomorrow"
+msgstr "Holnap"
+
+msgid "Open GTG"
+msgstr "Megnyitás GTG"
+
+msgid "GTG is closed"
+msgstr "GTG is closed"

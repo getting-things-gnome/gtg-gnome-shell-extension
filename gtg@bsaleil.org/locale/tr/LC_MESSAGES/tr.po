@@ -1,0 +1,17 @@
+msgid "Nothing Scheduled"
+msgstr "Planınız Boş"
+
+msgid "%A, %B %d"
+msgstr "%A, %B %d"
+
+msgid "Today"
+msgstr "Bugün"
+
+msgid "Tomorrow"
+msgstr "Yarın"
+
+msgid "Open GTG"
+msgstr "Aç GTG"
+
+msgid "GTG is closed"
+msgstr "GTG is closed"

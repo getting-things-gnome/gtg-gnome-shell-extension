@@ -1,0 +1,17 @@
+msgid "Nothing Scheduled"
+msgstr "Нема ништо закажано"
+
+msgid "%A, %B %d"
+msgstr "%A, %B %d"
+
+msgid "Today"
+msgstr "Денес"
+
+msgid "Tomorrow"
+msgstr "Утре"
+
+msgid "Open GTG"
+msgstr "Отвори GTG"
+
+msgid "GTG is closed"
+msgstr "GTG is closed"

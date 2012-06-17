@@ -1,0 +1,17 @@
+msgid "Nothing Scheduled"
+msgstr "Nieko nesuplanuota"
+
+msgid "%A, %B %d"
+msgstr "%A, %B %d d."
+
+msgid "Today"
+msgstr "Šiandien"
+
+msgid "Tomorrow"
+msgstr "Rytoj"
+
+msgid "Open GTG"
+msgstr "Atverti GTG"
+
+msgid "GTG is closed"
+msgstr "GTG is closed"

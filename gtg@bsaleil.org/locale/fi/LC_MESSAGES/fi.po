@@ -1,0 +1,17 @@
+msgid "Nothing Scheduled"
+msgstr "Ei merkintöjä"
+
+msgid "%A, %B %d"
+msgstr "%A, %d. %Bta"
+
+msgid "Today"
+msgstr "Tänään"
+
+msgid "Tomorrow"
+msgstr "Huomenna"
+
+msgid "Open GTG"
+msgstr "Avaa GTG"
+
+msgid "GTG is closed"
+msgstr "GTG is closed"

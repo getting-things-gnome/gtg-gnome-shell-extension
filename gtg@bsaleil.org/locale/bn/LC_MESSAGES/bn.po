@@ -1,0 +1,17 @@
+msgid "Nothing Scheduled"
+msgstr "কোনো কিছুর সময় ঠিক করা হয়নি"
+
+msgid "%A, %B %d"
+msgstr "%A, %B %d"
+
+msgid "Today"
+msgstr "আজ"
+
+msgid "Tomorrow"
+msgstr "আগামীকাল"
+
+msgid "Open GTG"
+msgstr "খুলুন GTG"
+
+msgid "GTG is closed"
+msgstr "GTG is closed"

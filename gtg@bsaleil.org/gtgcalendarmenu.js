@@ -129,15 +129,15 @@ const GTGCalendarMenu = new Lang.Class({
 		let title;
 		if (this.sameDay(day,today))
 		{
-			strTitle = "Today";
+			strTitle = _("Today");
 		}
 		else if (this.sameDay(day,tomorrow))
 		{
-			strTitle = "Tomorrow"
+			strTitle = _("Tomorrow")
 		}
 		else
 		{
-			dateFormat = "%A, %B %d";
+			dateFormat = _("%A, %B %d");
         		strTitle = day.toLocaleFormat(dateFormat);
         	}
         	title = new PopupMenu.PopupMenuItem(strTitle, {reactive: false});
@@ -149,7 +149,7 @@ const GTGCalendarMenu = new Lang.Class({
 		// Day tasks
 		if (!running)
 		{
-			this.displayBlockedItem("GTG is closed");
+			this.displayBlockedItem(_("GTG is closed"));
 		}
 		else
 		{
@@ -202,7 +202,7 @@ const GTGCalendarMenu = new Lang.Class({
 				}
 			}
 			if (nbTasks < 1)
-				this.displayBlockedItem("Nothing Scheduled");
+				this.displayBlockedItem(_("Nothing Scheduled"));
 		}		
 	},
 	

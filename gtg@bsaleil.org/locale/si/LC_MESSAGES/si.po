@@ -1,0 +1,17 @@
+msgid "Nothing Scheduled"
+msgstr "කිසිවක් සැළමුක් කර නැත"
+
+msgid "%A, %B %d"
+msgstr "%A, %B %d"
+
+msgid "Today"
+msgstr "අද"
+
+msgid "Tomorrow"
+msgstr "හෙට"
+
+msgid "Open GTG"
+msgstr "විවෘත කරන්න GTG"
+
+msgid "GTG is closed"
+msgstr "GTG is closed"

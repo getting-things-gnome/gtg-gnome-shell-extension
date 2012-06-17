@@ -1,0 +1,17 @@
+msgid "Nothing Scheduled"
+msgstr "Nessun evento"
+
+msgid "%A, %B %d"
+msgstr "%A, %e %B"
+
+msgid "Today"
+msgstr "Oggi"
+
+msgid "Tomorrow"
+msgstr "Domani"
+
+msgid "Open GTG"
+msgstr "Apri GTG"
+
+msgid "GTG is closed"
+msgstr "GTG is closed"
