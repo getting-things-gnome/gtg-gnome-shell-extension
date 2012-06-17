@@ -17,11 +17,9 @@ var allTasks;	// array : Contains all the tasks
 var running;	// bool : GTG is running
 var actors;	// array : Contains actual actors in calendar menu
 
-// TODO : Write script for import data from gnome-shell
 // TODO : Fix hover bug
 // TODO : Create gtg utils file ?
 // TODO : add now, soon, someday support
-// TODO : hide too long names (xxx...)
 
 const GTGCalendarMenu = new Lang.Class({
 	Name: 'GTGCalendarMenu',
@@ -220,7 +218,7 @@ const GTGCalendarMenu = new Lang.Class({
 		taskItem.connect('activate', function() {
 			GTGDBus.openTaskEditor(task.id);
 			Main.panel._dateMenu.menu.close();
-		});
+		});		
 		
 		if (multipleDayTask)
 			taskItem.actor.add_style_class_name("multipleDayTask");
