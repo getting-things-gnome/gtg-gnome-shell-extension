@@ -16,6 +16,9 @@ date="msgid \"%A, %B %d\"";
 today="msgid \"Today\"";
 tomorrow="msgid \"Tomorrow\"";
 
+closed="msgid \"GTG is closed\"";
+strClosed="msgstr \"GTG is closed\"";
+
 # For each file in folder
 for inode in $(ls -R)
 do
@@ -35,14 +38,26 @@ do
 				# If pattern found, add to destFile
 				if [ ${#res} != 0 ]
 					then
-					destFile="$destFile$res\n"
-					read line
-					destFile="$destFile$line\n\n"
+					# If the word "Open" is found
+					if [ "$res" = "$open" ]
+					then
+						var=$(expr "$res" : "\(.*\).$")
+						destFile="$destFile$var GTG\"\n"
+						read line
+						var=$(expr "$line" : "\(.*\).$")
+						destFile="$destFile$var GTG\"\n"
+					else
+						destFile="$destFile$res\n"
+						read line
+						destFile="$destFile$line\n\n"
+					fi
 	
 				fi
 	
 			done < $filename
 			
+			# Add "isclosed" item
+			destFile="$destFile\n$closed\n$strClosed"
 			# We can now create folders ans copy destFile
 			foldername=${filename:2}
 			foldername=${foldername%.po*}
