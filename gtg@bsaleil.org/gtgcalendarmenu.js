@@ -8,6 +8,10 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Extension = ExtensionUtils.getCurrentExtension();
 const GTGDBus = Extension.imports.gtgdbus;
 const Calendar = imports.ui.calendar;
+const Gettext = imports.gettext;
+const _ = Gettext.domain('gtgextension').gettext;
+
+const LENGTHMAX = 40; // Maximum length of a displayed task
 
 var allTasks;	// array : Contains all the tasks
 var running;	// bool : GTG is running
@@ -24,6 +28,9 @@ const GTGCalendarMenu = new Lang.Class({
 
 	_init: function(name)
 	{
+		let locales = Extension.dir.get_path() + "/locale";
+		Gettext.bindtextdomain('gtgextension', locales);
+	
 		// Hide existing calendar menu
 		hideSystemTasksList();
 		
@@ -63,7 +70,7 @@ const GTGCalendarMenu = new Lang.Class({
 		this.mainBox.add_actor(this.tasksBox, {expand: true});
 		
 		// Gtg button
-		this.gtgButton = new PopupMenu.PopupMenuItem("Open GTG");
+		this.gtgButton = new PopupMenu.PopupMenuItem(_("Open GTG"));
 		this.mainBox.add(this.gtgButton.actor,
 			{y_align: St.Align.END,
 		        expand: true,
@@ -203,6 +210,10 @@ const GTGCalendarMenu = new Lang.Class({
 	displayTask: function(task,multipleDayTask)
 	{
 		strTask = task.title;
+		// Adjust length
+		if (strTask.length > LENGTHMAX)
+			strTask = strTask.substr(0,LENGTHMAX) + "..."
+		
 		let taskItem = new PopupMenu.PopupMenuItem(strTask);
 		taskItem.actor.set_style("padding-left:50px;");
 		

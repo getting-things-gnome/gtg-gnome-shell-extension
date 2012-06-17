@@ -9,6 +9,8 @@ const Extension = ExtensionUtils.getCurrentExtension();
 const GTGCalendarMenu = Extension.imports.gtgcalendarmenu;
 const GTGDBus = Extension.imports.gtgdbus;
 
+const LENGTHMAX = 40; // Maximum length of a displayed task
+
 // TODO : scrollbar ?
 
 var allTasks;	// array : Contains all the tasks
@@ -46,6 +48,7 @@ const GTGTodoMenu = new Lang.Class({
 		// Todo box
 		this.todoBox = new St.BoxLayout();
 		this.todoBox.set_vertical(true);
+		this.todoBox.add_style_class_name("todoBox");
 		calendar.add_actor(this.todoBox, {expand: true});
 		
 		// If calendar menu is open, display todos
@@ -104,6 +107,10 @@ const GTGTodoMenu = new Lang.Class({
 	displayTodo: function(task)
 	{
 		let title = task.title;
+		// Adjust length
+		if (title.length > LENGTHMAX)
+			title = title.substr(0,LENGTHMAX) + "..."
+		
 		let item = new PopupMenu.PopupMenuItem(title);
 		item.actor.add_style_class_name("task");
 		item.connect('activate', function() {

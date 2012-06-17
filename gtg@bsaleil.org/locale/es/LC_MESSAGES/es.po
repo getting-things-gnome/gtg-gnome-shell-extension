@@ -1,0 +1,13 @@
+msgid "%A, %B %d"
+msgstr "%A, %d de %B"
+
+msgid "Today"
+msgstr "Hoy"
+
+msgid "Tomorrow"
+msgstr "Mañana"
+
+msgid "Open GTG"
+msgstr "Abrir GTG"
+
+

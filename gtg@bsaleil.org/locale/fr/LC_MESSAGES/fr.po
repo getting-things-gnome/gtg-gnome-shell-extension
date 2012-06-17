@@ -1,0 +1,3 @@
+
+msgid "Open GTG"
+msgstr "Ouvrir GTG"
