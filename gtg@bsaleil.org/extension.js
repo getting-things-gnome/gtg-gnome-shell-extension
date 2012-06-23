@@ -6,6 +6,8 @@ const GTGSearchProvider = Extension.imports.gtgsearchprovider;
 const GTGCalendarMenu = Extension.imports.gtgcalendarmenu;
 const GTGTodoMenu = Extension.imports.gtgtodomenu;
 
+// TODO : implements prefs effects
+
 // Search provider instance
 var GTGSPInstance = null;
 var GTGCMInstance = null;
