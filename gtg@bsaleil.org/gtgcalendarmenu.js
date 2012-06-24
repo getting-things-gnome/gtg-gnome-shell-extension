@@ -1,4 +1,5 @@
 const St = imports.gi.St;
+const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Main = imports.ui.main;
 const Util = imports.misc.util;
@@ -7,6 +8,7 @@ const Clutter = imports.gi.Clutter;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Extension = ExtensionUtils.getCurrentExtension();
 const GTGDBus = Extension.imports.gtgdbus;
+const Preferences = Extension.imports.prefs;
 const Calendar = imports.ui.calendar;
 const Gettext = imports.gettext;
 const _ = Gettext.domain('gtgextension').gettext;
@@ -16,6 +18,7 @@ const LENGTHMAX = 40; // Maximum length of a displayed task
 var allTasks;	// array : Contains all the tasks
 var running;	// bool : GTG is running
 var actors;	// array : Contains actual actors in calendar menu
+var prefs;	// array : Contains actual values of preferences
 
 // TODO : Fix hover bug
 // TODO : Create gtg utils file ?
@@ -28,9 +31,6 @@ const GTGCalendarMenu = new Lang.Class({
 	{
 		let locales = Extension.dir.get_path() + "/locale";
 		Gettext.bindtextdomain('gtgextension', locales);
-	
-		// Hide existing calendar menu
-		hideSystemTasksList();
 		
 		// Load tasks
 		allTasks = new Array();
@@ -51,6 +51,16 @@ const GTGCalendarMenu = new Lang.Class({
 			function() { running=true; loadTasks(); },
 			function() { running=false; loadTasks(); });
 		
+		// Load preferences
+		loadPreferences();
+		
+		// Monitor on prefs.json file
+		let prefsJSON = Gio.file_new_for_path(Extension.dir.get_path() + "/prefs.json");
+		this.monitor = prefsJSON.monitor(Gio.FileMonitorFlags.NONE, null);
+		this.monitor.connect('changed', function(){loadPreferences();});
+		
+		//TODO
+		global.log(prefs.HideExisting);
 		
 		// Vertical separator
 		let calendar = getChildByName(Main.panel._dateMenu.menu.box, 'calendarArea');
@@ -140,7 +150,10 @@ const GTGCalendarMenu = new Lang.Class({
         	}
         	title = new PopupMenu.PopupMenuItem(strTitle, {reactive: false});
         	title.actor.set_style("padding-top : 10px");
-		title.actor.add_style_class_name("dayTitle");
+        	// Check preferences
+        	if (prefs.SystemTheme)
+			title.actor.add_style_class_name("dayTitle");
+		
 		this.tasksBox.add(title.actor,{y_align: St.Align.START,y_fill: false});
 		actors.push(title);
 		
@@ -220,10 +233,13 @@ const GTGCalendarMenu = new Lang.Class({
 			Main.panel._dateMenu.menu.close();
 		});		
 		
+		// Check preferences
 		if (multipleDayTask)
-			taskItem.actor.add_style_class_name("multipleDayTask");
+			if (prefs.SystemTheme)
+				taskItem.actor.add_style_class_name("multipleDayTask");
 		else
-			taskItem.actor.add_style_class_name("task");
+			if (prefs.SystemTheme)
+				taskItem.actor.add_style_class_name("task");
 		
 		this.tasksBox.add(taskItem.actor,{y_align: St.Align.START,y_fill: false});
 		actors.push(taskItem);
@@ -234,7 +250,11 @@ const GTGCalendarMenu = new Lang.Class({
 	{
 		let item = new PopupMenu.PopupMenuItem(title,{reactive:false});
 		item.actor.set_style("padding-left:50px");
-		item.actor.add_style_class_name("task");
+		
+		// Check preferences
+		if (prefs.SystemTheme)
+			item.actor.add_style_class_name("task");
+		
 		this.tasksBox.add(item.actor,{y_align: St.Align.START,y_fill: false});		
 		actors.push(item);
 	},
@@ -289,11 +309,8 @@ const GTGCalendarMenu = new Lang.Class({
 		GTGDBus.GTGProxy.disconnect(this.modifiedSignal);
 		GTGDBus.GTGProxy.disconnect(this.deletedTask);
 		
-		let planning = Main.panel._dateMenu._eventList.actor.get_parent();
-		items = planning.get_parent().get_children();
-		index = items.indexOf(planning);
-		items[index].show()
-		items[(index == 0) ? index+1 : index-1].show()
+		// Show existing menu
+		showSystemTasksList();
 	}
 });
 
@@ -307,13 +324,22 @@ function getChildByName (a_parent, name)
 	})[0];
 }
 
+// Show existing calendar menu
+function showSystemTasksList()
+{
+	let planning = Main.panel._dateMenu._eventList.actor.get_parent();
+	items = planning.get_parent().get_children();
+	index = items.indexOf(planning);
+	items[index].show()
+	items[(index == 0) ? index+1 : index-1].show()
+}
+
 // Hide existing calendar menu
 function hideSystemTasksList()
 {
 	let planning = Main.panel._dateMenu._eventList.actor.get_parent();
 	items = planning.get_parent().get_children();
 	index = items.indexOf(planning);
-
 	items[index].hide();
 	items[(index == 0) ? index+1 : index-1].hide();
 }
@@ -349,4 +375,14 @@ function loadTasks()
 		});
 	}
 	else { allTasks = new Array(); }
+}
+
+// Load preferences in "prefs"
+function loadPreferences()
+{
+	prefs = Preferences.readPreferences();
+	if (prefs.HideExisting)
+		hideSystemTasksList();
+	else
+		showSystemTasksList();
 }

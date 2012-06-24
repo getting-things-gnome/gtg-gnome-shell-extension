@@ -8,6 +8,7 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Extension = ExtensionUtils.getCurrentExtension();
 const GTGCalendarMenu = Extension.imports.gtgcalendarmenu;
 const GTGDBus = Extension.imports.gtgdbus;
+const Preferences = Extension.imports.prefs;
 
 const LENGTHMAX = 40; // Maximum length of a displayed task
 
@@ -98,7 +99,12 @@ const GTGTodoMenu = new Lang.Class({
 	displayBlockedItem: function(title)
 	{
 		let item = new PopupMenu.PopupMenuItem(title,{reactive:false});
-		item.actor.add_style_class_name("task");
+		
+		// Check preferences
+		var prefs = Preferences.readPreferences();
+		if (prefs.SystemTheme)
+			item.actor.add_style_class_name("task");
+			
 		this.todoBox.add(item.actor,{y_align: St.Align.START,y_fill: false});		
 		actors.push(item);
 	},
@@ -112,7 +118,12 @@ const GTGTodoMenu = new Lang.Class({
 			title = title.substr(0,LENGTHMAX) + "..."
 		
 		let item = new PopupMenu.PopupMenuItem(title);
-		item.actor.add_style_class_name("task");
+		
+		// Check preferences
+		var prefs = Preferences.readPreferences();
+		if (prefs.SystemTheme)
+			item.actor.add_style_class_name("task");
+			
 		item.connect('activate', function() {
 			GTGDBus.openTaskEditor(task.id);
 			Main.panel._dateMenu.menu.close();
