@@ -1,4 +1,5 @@
 const St = imports.gi.St;
+const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Main = imports.ui.main;
 const Mainloop = imports.mainloop;
@@ -17,6 +18,7 @@ const LENGTHMAX = 40; // Maximum length of a displayed task
 var allTasks;	// array : Contains all the tasks
 var running;	// bool : GTG is running
 var actors;	// array : Contains actual actors in calendar menu
+var prefs;	// array : Contains actual values of preferences
 
 const GTGTodoMenu = new Lang.Class({
 	Name: 'GTGTodoMenu',
@@ -41,6 +43,14 @@ const GTGTodoMenu = new Lang.Class({
 		GTGDBus.DBus.session.watch_name("org.gnome.GTG", false,
 			function() { running=true; loadTasks(); },
 			function() { running=false; loadTasks(); });
+		
+		// Load preferences
+		prefs = Preferences.readPreferences();
+		
+		// Monitor on prefs.json file
+		let prefsJSON = Gio.file_new_for_path(Extension.dir.get_path() + "/prefs.json");
+		this.monitor = prefsJSON.monitor(Gio.FileMonitorFlags.NONE, null);
+		this.monitor.connect('changed', function(){prefs = Preferences.readPreferences();});
 		
 		// Vertical separator
 		let calendar = getChildByName(Main.panel._dateMenu.menu.box, 'calendarArea');
@@ -101,7 +111,6 @@ const GTGTodoMenu = new Lang.Class({
 		let item = new PopupMenu.PopupMenuItem(title,{reactive:false});
 		
 		// Check preferences
-		var prefs = Preferences.readPreferences();
 		if (prefs.SystemTheme)
 			item.actor.add_style_class_name("task");
 			
@@ -120,7 +129,6 @@ const GTGTodoMenu = new Lang.Class({
 		let item = new PopupMenu.PopupMenuItem(title);
 		
 		// Check preferences
-		var prefs = Preferences.readPreferences();
 		if (prefs.SystemTheme)
 			item.actor.add_style_class_name("task");
 			
@@ -138,6 +146,7 @@ const GTGTodoMenu = new Lang.Class({
 		timerActive = false;
 		this.todoBox.destroy();
 		this.separator.destroy();
+		this.monitor.cancel();
 	}
 	
 });
