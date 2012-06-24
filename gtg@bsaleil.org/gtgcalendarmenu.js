@@ -59,9 +59,6 @@ const GTGCalendarMenu = new Lang.Class({
 		this.monitor = prefsJSON.monitor(Gio.FileMonitorFlags.NONE, null);
 		this.monitor.connect('changed', function(){loadPreferences();});
 		
-		//TODO
-		global.log(prefs.HideExisting);
-		
 		// Vertical separator
 		let calendar = getChildByName(Main.panel._dateMenu.menu.box, 'calendarArea');
 		this.addSeparator(calendar);
@@ -308,6 +305,7 @@ const GTGCalendarMenu = new Lang.Class({
 		GTGDBus.GTGProxy.disconnect(this.addedSignal);
 		GTGDBus.GTGProxy.disconnect(this.modifiedSignal);
 		GTGDBus.GTGProxy.disconnect(this.deletedTask);
+		this.monitor.cancel();
 		
 		// Show existing menu
 		showSystemTasksList();
