@@ -19,5 +19,11 @@
 
 .mainBox
 {
-	min-width: 350px;
+	min-width: 300px;
+}
+
+.todoBox
+{
+	min-width: 150px;
+	height : 0px;
 }

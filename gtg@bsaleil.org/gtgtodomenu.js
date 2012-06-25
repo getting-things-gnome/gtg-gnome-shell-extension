@@ -1,4 +1,5 @@
 const St = imports.gi.St;
+const Gtk = imports.gi.Gtk; // TODO
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Main = imports.ui.main;
@@ -12,6 +13,7 @@ const GTGDBus = Extension.imports.gtgdbus;
 const Preferences = Extension.imports.prefs;
 
 const LENGTHMAX = 40; // Maximum length of a displayed task
+const NBTASKSCROLL = 10; // Nb of tasks before scrollbar
 
 // TODO : scrollbar ?
 
@@ -60,7 +62,13 @@ const GTGTodoMenu = new Lang.Class({
 		this.todoBox = new St.BoxLayout();
 		this.todoBox.set_vertical(true);
 		this.todoBox.add_style_class_name("todoBox");
-		calendar.add_actor(this.todoBox, {expand: true});
+		
+		// Scroll view
+		this.scrollView = new St.ScrollView({style_class: 'vfade',
+                                          hscrollbar_policy: Gtk.PolicyType.NEVER,
+                                          vscrollbar_policy: Gtk.PolicyType.ALWAYS});
+		this.scrollView.add_actor(this.todoBox);
+		calendar.add_actor(this.scrollView);
 		
 		// If calendar menu is open, display todos
         	Main.panel._dateMenu.menu.connect('open-state-changed', Lang.bind(this,
