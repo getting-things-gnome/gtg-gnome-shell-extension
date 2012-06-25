@@ -1,5 +1,5 @@
 const St = imports.gi.St;
-const Gtk = imports.gi.Gtk; // TODO
+const Gtk = imports.gi.Gtk;
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Main = imports.ui.main;
@@ -13,9 +13,6 @@ const GTGDBus = Extension.imports.gtgdbus;
 const Preferences = Extension.imports.prefs;
 
 const LENGTHMAX = 40; // Maximum length of a displayed task
-const NBTASKSCROLL = 10; // Nb of tasks before scrollbar
-
-// TODO : scrollbar ?
 
 var allTasks;	// array : Contains all the tasks
 var running;	// bool : GTG is running
