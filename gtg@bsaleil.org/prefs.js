@@ -3,77 +3,67 @@ const GLib = imports.gi.GLib;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Extension = ExtensionUtils.getCurrentExtension();
 
+var prefs;
+
 // Gnome-Shell entry point :
 // Build preferences widget in extensions preferences menu
 function buildPrefsWidget() 
 {
 	// Load preferences
-	let prefs = readPreferences();
+	prefs = readPreferences();
+	
+	// Define settings with label, and id
+	var settings = 
+	[
+		{label: "Hide existing menu", id : "HideExisting"},
+		{label: "Display long tasks", id : "DisplayLong"},
+		{label: "Use system theme", id : "SystemTheme"},
+	]
 
 	// Create main box
 	let mainBox = new Gtk.Box({
 		orientation: Gtk.Orientation.VERTICAL,
 		border_width: 20,
-		spacing: 20
+		margin_top: 10,
+		margin: 20
 	});
-
-	// UI : "Hide existing" item
-	let labelHE = createLabel("Hide existing menu :\n<small>(Hide the original menu when extension is enabled)</small>");
-	let checkHE = new Gtk.CheckButton();
-	let hboxHE = createHBox(labelHE,checkHE);
 	
-	// UI : "Display long" item
-	let labelDL = createLabel("Display long tasks:\n<small>(Display tasks that started long ago, and those ending in a long time)</small>");
-	let checkDL = new Gtk.CheckButton();
-	let hboxDL = createHBox(labelDL,checkDL);
+	// Create settings
+	var hbox;
+	for (setting in settings)
+	{
+		hbox = createSetting(settings[setting]);
+		mainBox.add(hbox);
+	}	
 	
-	// UI : "System theme" item
-	let labelST = createLabel("Use system theme:\n<small>(Display the gtg extension menu with a system-like theme)</small>");
-	let checkST = new Gtk.CheckButton();
-	let hboxST = createHBox(labelST,checkST);
-
-	// UI : Add the horizontal boxes
-	mainBox.add(hboxHE);
-	mainBox.add(hboxDL);
-	mainBox.add(hboxST);
-	
-	// Connect toggled signal of checkboxes
-	checkHE.connect('toggled', function(obj){stateChanged("HideExisting",obj.active)});
-	checkDL.connect('toggled', function(obj){stateChanged("DisplayLong",obj.active)});
-	checkST.connect('toggled', function(obj){stateChanged("SystemTheme",obj.active)});
-	
-	// Set actual state of preferences
-	checkHE.set_active(prefs.HideExisting);
-	checkDL.set_active(prefs.DisplayLong);
-	checkST.set_active(prefs.SystemTheme);
-	
+	// Display settings
 	mainBox.show_all();
 	return mainBox;
 }
 
-// Create and return a new horizontal box with given label and checkbox
-function createHBox(label,checkbox)
+// Create the hbox for the given setting
+function createSetting(setting)
 {
-	let hbox = new Gtk.Box({
-		orientation: Gtk.Orientation.HORIZONTAL,
-		spacing: 20
-	});
-	hbox.add(label);
-	hbox.add(checkbox);
-	return hbox;
-}
-
-// Create and return a new label with given text
-function createLabel(text)
-{
+	// Label
 	let label = new Gtk.Label({
-		label: text,
-		use_markup: true
+		label: setting.label,
+		xalign: 0
 	});
-	return label;
+	
+	// Switch button
+	let button = new Gtk.Switch({active: prefs[setting.id]});	
+	button.connect('notify::active', function(obj){stateChanged(setting.id,obj.active)});
+	
+	let box = new Gtk.Box({
+		orientation: Gtk.Orientation.HORIZONTAL,
+		margin_top: 5
+	});
+	box.pack_start(label, true, true, 0);
+	box.add(button);
+	return box;
 }
 
-// Called when a state on one of the preferences changed
+// Called when a state of one setting changed
 function stateChanged(id,state)
 {
 	let prefs = readPreferences();
