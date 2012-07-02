@@ -15,7 +15,6 @@ const Gettext = imports.gettext;
 const _ = Gettext.domain('gtgextension').gettext;
 
 const LENGTHMAX = 40; 	// Maximum length of a displayed task
-const LONGTASKDAYS = 60;	// Max days before be considered as a long task
 
 var allTasks;	// array : Contains all the tasks
 var running;	// bool : GTG is running
@@ -26,7 +25,6 @@ var prefs;	// array : Contains actual values of preferences
 // TODO : Create gtg utils file ?
 // TODO : add now, soon, someday support
 // TODO : Sort tasks before reading (When incoming signal) to improve speed
-// TODO : Improve prefs with consts
 
 const GTGCalendarMenu = new Lang.Class({
 	Name: 'GTGCalendarMenu',
@@ -194,7 +192,7 @@ const GTGCalendarMenu = new Lang.Class({
 				let dueDate = new Date(ret[0],ret[1]-1,ret[2]);
 				
 				// Check preferences and hide long tasks if needed
-				if (prefs.DisplayLong || ( !this.longTask(startDate) && !this.longTask(dueDate)))	
+				if (prefs.DisplayLong || ( !this.longTask(day,startDate) && !this.longTask(day,dueDate)))	
 				{
 					// Display multiple days tasks with start date
 					if (this.compareDays(startDate,day) == -1)
@@ -288,13 +286,15 @@ const GTGCalendarMenu = new Lang.Class({
 	},
 	
 	// Determines if the given day is a day of a long task (true if long task, else false)
-	longTask: function (taskDay)
+	longTask: function (selectedDay,taskDay)
 	{
-		var today = new Date();
-		let day = new Date(taskDay.getFullYear(),taskDay.getMonth(),taskDay.getDate());
+		// Check preferences
+        	var longTaskDays = prefs.DaysLongTask;
+        	let dayA = new Date(selectedDay.getFullYear(),selectedDay.getMonth(),selectedDay.getDate());
+		let dayB = new Date(taskDay.getFullYear(),taskDay.getMonth(),taskDay.getDate());
 		// Get number of days between them
-		var diff = Math.abs(Math.ceil((day.getTime() - today.getTime())/(1000*60*60*24)));
-		if (diff > LONGTASKDAYS)
+		var diff = Math.abs(Math.ceil((dayA.getTime() - dayB.getTime())/(1000*60*60*24)));
+		if (diff > longTaskDays)
 			return true;
 		else
 			return false;

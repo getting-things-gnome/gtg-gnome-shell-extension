@@ -15,9 +15,10 @@ function buildPrefsWidget()
 	// Define settings with label, and id
 	var settings = 
 	[
-		{label: "Hide existing menu", id : "HideExisting"},
-		{label: "Display long tasks", id : "DisplayLong"},
-		{label: "Use system theme", id : "SystemTheme"},
+		{label: "Hide existing menu", id : "HideExisting", type : 'b'},
+		{label: "Display long tasks", id : "DisplayLong", type : 'b'},
+		{label: "Number of days for a long task", id : "DaysLongTask", type : 'i'},
+		{label: "Use system theme", id : "SystemTheme", type : 'b'},
 	]
 
 	// Create main box
@@ -32,7 +33,10 @@ function buildPrefsWidget()
 	var hbox;
 	for (setting in settings)
 	{
-		hbox = createSetting(settings[setting]);
+		if (settings[setting].type == 'b')
+			hbox = createBoolSetting(settings[setting]);
+		else if (settings[setting].type == 'i')
+			hbox = createIntSetting(settings[setting]);
 		mainBox.add(hbox);
 	}	
 	
@@ -41,8 +45,33 @@ function buildPrefsWidget()
 	return mainBox;
 }
 
-// Create the hbox for the given setting
-function createSetting(setting)
+// TODO :
+// Create the hbox for the given int setting
+function createIntSetting(setting)
+{
+	// Label
+	let label = new Gtk.Label({
+		label: setting.label,
+		xalign: 0
+	});
+	
+	// Spin button
+	let adjustment = new Gtk.Adjustment({ lower: 30, upper: 365, step_increment: 1});
+	let button = new Gtk.SpinButton({adjustment: adjustment,snap_to_ticks: true});
+	button.set_value(prefs[setting.id]);
+	button.connect('value-changed', function(entry){stateChanged(setting.id,entry.value)});
+	
+	let box = new Gtk.Box({
+		orientation: Gtk.Orientation.HORIZONTAL,
+		margin_top: 5
+	});
+	box.pack_start(label, true, true, 0);
+	box.add(button);
+	return box;
+}
+
+// Create the hbox for the given string setting
+function createBoolSetting(setting)
 {
 	// Label
 	let label = new Gtk.Label({
@@ -66,7 +95,6 @@ function createSetting(setting)
 // Called when a state of one setting changed
 function stateChanged(id,state)
 {
-	let prefs = readPreferences();
 	for (var i in prefs)
 	{
 		// If the preference exists, set new state
@@ -74,7 +102,7 @@ function stateChanged(id,state)
 			prefs[i] = state;
 	}
 	
-	writePreferences(prefs);
+	writePreferences();
 }
 
 // Read array from preferences file (return an array)
@@ -85,7 +113,7 @@ function readPreferences()
 }
 
 // Write array in preferences file.
-function writePreferences(prefs)
+function writePreferences()
 {
 	GLib.file_set_contents(Extension.dir.get_path() + "/prefs.json",JSON.stringify(prefs));
 }
