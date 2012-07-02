@@ -1,4 +1,5 @@
 const St = imports.gi.St;
+const Gtk = imports.gi.Gtk;
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Main = imports.ui.main;
@@ -67,7 +68,13 @@ const GTGCalendarMenu = new Lang.Class({
 		this.mainBox = new St.BoxLayout();
 		this.mainBox.set_vertical(true);
 		this.mainBox.add_style_class_name("mainBox");
-		calendar.add_actor(this.mainBox, {expand: true});
+		
+		// Scroll view
+		this.scrollView = new St.ScrollView({style_class: 'vfade',
+                                          hscrollbar_policy: Gtk.PolicyType.NEVER,
+                                          vscrollbar_policy: Gtk.PolicyType.ALWAYS});
+		this.scrollView.add_actor(this.mainBox);
+		calendar.add_actor(this.scrollView);
 		
 		// Tasks box
 		this.tasksBox = new St.BoxLayout();
