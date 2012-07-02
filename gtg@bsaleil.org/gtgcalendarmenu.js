@@ -169,18 +169,6 @@ const GTGCalendarMenu = new Lang.Class({
 		else
 		{
 			var nbTasks = 0;
-			for (i=0; i<allTasks.length; i++)
-			{
-				let ret = allTasks[i].startdate.split('-');
-				let startDate = new Date(ret[0],ret[1]-1,ret[2]);
-				
-				// If start date == day selected, display on first block
-				if (this.compareDays(day,startDate) == 0)
-				{
-					nbTasks++;
-					this.displayTask(allTasks[i],false);
-				}
-			}
 			
 			for (i=0; i<allTasks.length; i++)
 			{
@@ -188,9 +176,16 @@ const GTGCalendarMenu = new Lang.Class({
 				let startDate = new Date(ret[0],ret[1]-1,ret[2]);
 				ret = allTasks[i].duedate.split('-');
 				let dueDate = new Date(ret[0],ret[1]-1,ret[2]);
-			
+				
+				// If start date == day selected, display on first block
+				if (this.compareDays(day,startDate) == 0)
+				{
+					nbTasks++;
+					this.displayTask(allTasks[i],false);
+				}
+				
 				// Display multiple days tasks with start date
-				if (this.compareDays(startDate,day) == -1)
+				else if (this.compareDays(startDate,day) == -1)
 				{
 					if (!this.validDay(dueDate))
 					{
