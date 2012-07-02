@@ -4,6 +4,9 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Extension = ExtensionUtils.getCurrentExtension();
 
 var prefs;
+var activable;
+
+var daysLongTaskBox;
 
 // Gnome-Shell entry point :
 // Build preferences widget in extensions preferences menu
@@ -11,6 +14,7 @@ function buildPrefsWidget()
 {
 	// Load preferences
 	prefs = readPreferences();
+	activable = new Array();
 	
 	// Define settings with label, and id
 	var settings = 
@@ -45,7 +49,6 @@ function buildPrefsWidget()
 	return mainBox;
 }
 
-// TODO :
 // Create the hbox for the given int setting
 function createIntSetting(setting)
 {
@@ -67,6 +70,13 @@ function createIntSetting(setting)
 	});
 	box.pack_start(label, true, true, 0);
 	box.add(button);
+	
+	// If is the days long task item, it depends on DisplayLong state
+	if (setting.id == "DaysLongTask")
+	{
+		button.set_sensitive(!prefs["DisplayLong"]);
+		daysLongTaskBox = box;
+	}
 	return box;
 }
 
@@ -102,6 +112,7 @@ function stateChanged(id,state)
 			prefs[i] = state;
 	}
 	
+	daysLongTaskBox.set_sensitive(!prefs["DisplayLong"]);
 	writePreferences();
 }
 
