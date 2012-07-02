@@ -14,7 +14,8 @@ const Calendar = imports.ui.calendar;
 const Gettext = imports.gettext;
 const _ = Gettext.domain('gtgextension').gettext;
 
-const LENGTHMAX = 40; // Maximum length of a displayed task
+const LENGTHMAX = 40; 	// Maximum length of a displayed task
+const LONGTASKDAYS = 60;	// Max days before be considered as a long task
 
 var allTasks;	// array : Contains all the tasks
 var running;	// bool : GTG is running
@@ -24,6 +25,8 @@ var prefs;	// array : Contains actual values of preferences
 // TODO : Fix hover bug
 // TODO : Create gtg utils file ?
 // TODO : add now, soon, someday support
+// TODO : Sort tasks before reading (When incoming signal) to improve speed
+// TODO : Improve prefs with consts
 
 const GTGCalendarMenu = new Lang.Class({
 	Name: 'GTGCalendarMenu',
@@ -169,6 +172,18 @@ const GTGCalendarMenu = new Lang.Class({
 		else
 		{
 			var nbTasks = 0;
+			for (i=0; i<allTasks.length; i++)
+			{
+				let ret = allTasks[i].startdate.split('-');
+				let startDate = new Date(ret[0],ret[1]-1,ret[2]);
+
+				// If start date == day selected, display on first block
+				if (this.compareDays(day,startDate) == 0)
+				{
+					nbTasks++;
+					this.displayTask(allTasks[i],false);
+				}
+			}			
 			
 			for (i=0; i<allTasks.length; i++)
 			{
@@ -177,40 +192,38 @@ const GTGCalendarMenu = new Lang.Class({
 				ret = allTasks[i].duedate.split('-');
 				let dueDate = new Date(ret[0],ret[1]-1,ret[2]);
 				
-				// If start date == day selected, display on first block
-				if (this.compareDays(day,startDate) == 0)
+				// Check preferences and hide long tasks if needed
+				if (prefs.DisplayLong || ( !this.longTask(startDate) && !this.longTask(dueDate)))	
 				{
-					nbTasks++;
-					this.displayTask(allTasks[i],false);
-				}
-				
-				// Display multiple days tasks with start date
-				else if (this.compareDays(startDate,day) == -1)
-				{
-					if (!this.validDay(dueDate))
+					// Display multiple days tasks with start date
+					if (this.compareDays(startDate,day) == -1)
 					{
-						nbTasks++;
-						this.displayTask(allTasks[i],true);
+						if (!this.validDay(dueDate))
+						{
+							nbTasks++;
+							this.displayTask(allTasks[i],true);
+						}
+						else if (this.validDay(dueDate)
+							&& this.compareDays(dueDate,day) != -1)
+						{
+							nbTasks++;
+							this.displayTask(allTasks[i],true);
+						}
 					}
-					else if (this.validDay(dueDate)
-						&& this.compareDays(dueDate,day) != -1)
-					{
-						nbTasks++;
-						this.displayTask(allTasks[i],true);
-					}
-				}
 				
-				// Display multiple days tasks without start date
-				else if (!this.validDay(startDate))
-				{
-					if (this.validDay(dueDate)
-						&& this.compareDays(dueDate,day) != -1)
+					// Display multiple days tasks without start date
+					else if (!this.validDay(startDate))
 					{
-						nbTasks++;
-						this.displayTask(allTasks[i],true);
+						if (this.validDay(dueDate)
+							&& this.compareDays(dueDate,day) != -1)
+						{
+							nbTasks++;
+							this.displayTask(allTasks[i],true);
+						}
 					}
 				}
 			}
+			
 			if (nbTasks < 1)
 				this.displayBlockedItem(_("Nothing Scheduled"));
 		}		
@@ -271,6 +284,19 @@ const GTGCalendarMenu = new Lang.Class({
 	{
 		diff = day1.getTime()-day2.getTime();
 		return (diff==0?diff:diff/Math.abs(diff));
+	},
+	
+	// Determines if the given day is a day of a long task (true if long task, else false)
+	longTask: function (taskDay)
+	{
+		var today = new Date();
+		let day = new Date(taskDay.getFullYear(),taskDay.getMonth(),taskDay.getDate());
+		// Get number of days between them
+		var diff = Math.abs(Math.ceil((day.getTime() - today.getTime())/(1000*60*60*24)));
+		if (diff > LONGTASKDAYS)
+			return true;
+		else
+			return false;
 	},
 	
 	// true if valid day, false if not
