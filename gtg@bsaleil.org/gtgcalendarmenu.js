@@ -71,18 +71,19 @@ const GTGCalendarMenu = new Lang.Class({
 		this.mainBox = new St.BoxLayout();
 		this.mainBox.set_vertical(true);
 		this.mainBox.add_style_class_name("mainBox");
+		calendar.add_actor(this.mainBox);
 		
 		// Scroll view
 		this.scrollView = new St.ScrollView({style_class: 'vfade',
                                           hscrollbar_policy: Gtk.PolicyType.NEVER,
                                           vscrollbar_policy: Gtk.PolicyType.ALWAYS});
 		this.scrollView.add_actor(this.mainBox);
-		calendar.add_actor(this.scrollView);
+		this.mainBox.add_actor(this.scrollView, {expand: true});
 		
 		// Tasks box
 		this.tasksBox = new St.BoxLayout();
 		this.tasksBox.set_vertical(true);
-		this.mainBox.add_actor(this.tasksBox, {expand: true});
+		this.scrollView.add_actor(this.tasksBox);
 		
 		// Gtg button
 		this.gtgButton = new PopupMenu.PopupMenuItem(_("Open GTG"));
