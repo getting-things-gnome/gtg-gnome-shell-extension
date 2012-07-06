@@ -23,7 +23,6 @@ var prefs;	// array : Contains actual values of preferences
 
 // TODO : Fix hover bug
 // TODO : Fix scrollbar bug
-// TODO : Fix someday bug
 // TODO : Sort tasks before reading (in load tasks)
 
 const GTGCalendarMenu = new Lang.Class({
@@ -191,7 +190,7 @@ const GTGCalendarMenu = new Lang.Class({
 				}
 				
 				// Keyword "soon"
-				if (allTasks.startdate == '' || this.compareDays(startDate,day) == -1)
+				if (allTasks[i].startdate == "" || this.compareDays(startDate,day) == -1)
 				{
 					if ((isToday || isTomorrow) && allTasks[i].duedate == "soon")
 					{
@@ -215,7 +214,12 @@ const GTGCalendarMenu = new Lang.Class({
 					// Display multiple days tasks with start date
 					if (this.compareDays(startDate,day) == -1)
 					{
-						if (!this.validDay(dueDate) && allTasks[i].duedate != "soon")
+						if (allTasks[i].duedate == "someday")
+						{
+							nbTasks++;
+							this.displayTask(allTasks[i],true);
+						}
+						if (!this.validDay(dueDate) && allTasks[i].duedate != "soon" && allTasks[i].duedate != "someday")
 						{
 							nbTasks++;
 							this.displayTask(allTasks[i],true);
@@ -229,7 +233,7 @@ const GTGCalendarMenu = new Lang.Class({
 					}
 					
 					// If keyword "someday"
-					else if (allTasks[i].duedate == "someday")
+					else if (allTasks[i].startdate == "" && allTasks[i].duedate == "someday")
 					{
 						nbTasks++;
 						this.displayTask(allTasks[i],true);
