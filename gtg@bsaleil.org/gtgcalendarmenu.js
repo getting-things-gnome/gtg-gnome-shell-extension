@@ -22,9 +22,8 @@ var actors;	// array : Contains actual actors in calendar menu
 var prefs;	// array : Contains actual values of preferences
 
 // TODO : Fix hover bug
-// TODO : Create gtg utils file ?
 // TODO : add now, soon, someday support
-// TODO : Sort tasks before reading (When incoming signal) to improve speed
+// TODO : Sort tasks before reading (in load tasks)
 
 const GTGCalendarMenu = new Lang.Class({
 	Name: 'GTGCalendarMenu',

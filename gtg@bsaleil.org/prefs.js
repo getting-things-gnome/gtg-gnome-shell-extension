@@ -71,7 +71,7 @@ function createIntSetting(setting)
 	// If it's the "dayslongtask" item, it depends on DisplayLong state
 	if (setting.id == "DaysLongTask")
 	{
-		button.set_sensitive(!prefs["DisplayLong"]);
+		box.set_sensitive(!prefs["DisplayLong"]);
 		daysLongTaskBox = box;
 	}
 	return box;
