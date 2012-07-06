@@ -22,7 +22,8 @@ var actors;	// array : Contains actual actors in calendar menu
 var prefs;	// array : Contains actual values of preferences
 
 // TODO : Fix hover bug
-// TODO : add now, soon, someday support
+// TODO : Fix scrollbar bug
+// TODO : Add "someday" support
 // TODO : Sort tasks before reading (in load tasks)
 
 const GTGCalendarMenu = new Lang.Class({
@@ -136,6 +137,8 @@ const GTGCalendarMenu = new Lang.Class({
 	displayTasksForDay: function(day)
 	{
 		// Title
+		let isToday = false;
+		let isTomorrow = false;
 		let strTitle = "";
 		let today = new Date();
 		let tomorrow = new Date(today.getTime() + 86400000);
@@ -143,10 +146,12 @@ const GTGCalendarMenu = new Lang.Class({
 		if (this.sameDay(day,today))
 		{
 			strTitle = _("Today");
+			isToday = true;
 		}
 		else if (this.sameDay(day,tomorrow))
 		{
 			strTitle = _("Tomorrow")
+			isTomorrow = true;
 		}
 		else
 		{
@@ -176,7 +181,10 @@ const GTGCalendarMenu = new Lang.Class({
 				let startDate = new Date(ret[0],ret[1]-1,ret[2]);
 
 				// If start date == day selected, display on first block
-				if (this.compareDays(day,startDate) == 0)
+				if (this.compareDays(day,startDate) == 0 
+					|| (isToday && allTasks[i].duedate == "now")
+					|| (isToday && allTasks[i].duedate == "soon") 
+					|| (isTomorrow && allTasks[i].duedate == "soon"))
 				{
 					nbTasks++;
 					this.displayTask(allTasks[i],false);
