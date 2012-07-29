@@ -1,7 +1,7 @@
 {
 	"shell-version": ["3.4"],
 	"uuid": "gtg@bsaleil.org",
-	"name": "GTG extension",
-	"description": "GTG extension",
-	"url": "http://bsaleil.org/"
+	"name": "GTG integration",
+	"description": "GTG integration with GNOME Shell",
+	"url": "https://github.com/bsaleil/gtg-gnome-shell-extension"
 }
