@@ -1,4 +1,4 @@
-#gtg-gnome-shell-extension
+#GTG integration with GNOME Shell
 
 ##Installation
 
