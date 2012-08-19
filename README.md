@@ -1,9 +1,9 @@
 #GTG integration with GNOME Shell
 
-The integration of GTG with GNOME Shell was a 2012 Summer of Code project realized by Baptiste Saleil.
-Homepage : [GNOME Live](https://live.gnome.org/SummerOfCode2012/Projects/BaptisteSaleil_GTG_GNOME_Shell)
-Repository : [bsaleil on Github](https://github.com/bsaleil)
-Blog : [Project blog](http://bsaleil.org/blog/)
+The integration of GTG with GNOME Shell was a 2012 Summer of Code project realized by Baptiste Saleil.  
+Homepage : [GNOME Live](https://live.gnome.org/SummerOfCode2012/Projects/BaptisteSaleil_GTG_GNOME_Shell)  
+Repository : [bsaleil on Github](https://github.com/bsaleil)  
+Blog : [Project blog](http://bsaleil.org/blog/)  
 
 ##Installation
 
