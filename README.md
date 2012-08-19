@@ -37,4 +37,6 @@ By this way, every tasks are listed to user.
 
 ###Preferences
 
+![alt text](http://bsaleil.org/blog/wp-content/uploads/2012/07/preferences.png "Preferences")
+
 TODO
