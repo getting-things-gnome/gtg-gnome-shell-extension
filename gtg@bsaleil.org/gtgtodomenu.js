@@ -52,7 +52,7 @@ const GTGTodoMenu = new Lang.Class({
 		this.monitor.connect('changed', function(){prefs = Preferences.readPreferences();});
 		
 		// Vertical separator
-		let calendar = getChildByName(Main.panel._dateMenu.menu.box, 'calendarArea');
+		let calendar = getChildByName(Main.panel.statusArea.dateMenu.menu.box, 'calendarArea');
 		this.addSeparator(calendar);
 		
 		// Todo box
@@ -68,7 +68,7 @@ const GTGTodoMenu = new Lang.Class({
 		calendar.add_actor(this.scrollView);
 		
 		// If calendar menu is open, display todos
-        	Main.panel._dateMenu.menu.connect('open-state-changed', Lang.bind(this,
+        	Main.panel.statusArea.dateMenu.menu.connect('open-state-changed', Lang.bind(this,
 		function(menu, isOpen) {
 			if (isOpen) this.displayTodos();
         	}));
@@ -139,7 +139,7 @@ const GTGTodoMenu = new Lang.Class({
 			
 		item.connect('activate', function() {
 			GTGDBus.openTaskEditor(task.id);
-			Main.panel._dateMenu.menu.close();
+			Main.panel.statusArea.dateMenu.menu.close();
 		});
 		this.todoBox.add(item.actor,{y_align: St.Align.START,y_fill: false});
 		actors.push(item);
