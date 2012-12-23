@@ -87,7 +87,7 @@ const GTGTodoMenu = new Lang.Class({
 	displayTodos: function()
 	{
 		// Remove actual actors
-		for (i=0; i<actors.length; i++)
+		for (let i = 0; i < actors.length; i++)
 			this.todoBox.remove_actor(actors[i].actor);
 
 		// Display tasks only if gtg is running
@@ -99,7 +99,7 @@ const GTGTodoMenu = new Lang.Class({
 		{	
 			// Display all tasks without start and due date
 			var nbTasks = 0;
-			for (i=0; i<allTasks.length; i++)
+			for (let i = 0; i < allTasks.length; i++)
 				if (allTasks[i].startdate == "" && allTasks[i].duedate == "")
 				{
 					this.displayTodo(allTasks[i]);

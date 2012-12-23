@@ -175,7 +175,7 @@ const GTGCalendarMenu = new Lang.Class({
 		{
 			var nbTasks = 0;
 			// First block
-			for (i=0; i<allTasks.length; i++)
+			for (let i = 0; i < allTasks.length; i++)
 			{
 				let ret = allTasks[i].startdate.split('-');
 				let startDate = new Date(ret[0],ret[1]-1,ret[2]);
@@ -201,7 +201,7 @@ const GTGCalendarMenu = new Lang.Class({
 			}			
 			
 			// Second block
-			for (i=0; i<allTasks.length; i++)
+			for (let i = 0; i < allTasks.length; i++)
 			{
 				let ret = allTasks[i].startdate.split('-');
 				let startDate = new Date(ret[0],ret[1]-1,ret[2]);
@@ -260,7 +260,7 @@ const GTGCalendarMenu = new Lang.Class({
 	// Display a task on the menu
 	displayTask: function(task,multipleDayTask)
 	{
-		strTask = task.title;
+		let strTask = task.title;
 		// Adjust length
 		if (strTask.length > LENGTHMAX)
 			strTask = strTask.substr(0,LENGTHMAX) + "..."
@@ -310,7 +310,7 @@ const GTGCalendarMenu = new Lang.Class({
 	// Compare two days : 0 if ==, 1 if >, -1 if <	  
 	compareDays: function (day1, day2)
 	{
-		diff = day1.getTime()-day2.getTime();
+		let diff = day1.getTime()-day2.getTime();
 		return (diff==0?diff:diff/Math.abs(diff));
 	},
 	
@@ -338,10 +338,11 @@ const GTGCalendarMenu = new Lang.Class({
 	// Remove existings actors from the menu
 	removeActors: function()
 	{
-		for (i=0; i<actors.length; i++)
+		for (let i = 0; i < actors.length; i++)
 		{
 			this.tasksBox.remove_actor(actors[i].actor);
 		}
+		actors = [];
 	},
 	
 	// Open GTG if it's closed
