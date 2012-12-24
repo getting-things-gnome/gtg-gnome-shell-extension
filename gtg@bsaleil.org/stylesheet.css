@@ -1,19 +1,19 @@
 .dayTitle
 {
-	font-size : 12px;
+	font-size : 14px;
 	font-weight : bold;
 	color : #979797;
 }
 
 .task
 {
-	font-size : 12px;
+	font-size : 14px;
 	color : #b0b0b0; /* system : #979797 */
 }
 
 .multipleDayTask
 {
-	font-size : 12px;
+	font-size : 14px;
 	color : #5e5e5e;
 }
 

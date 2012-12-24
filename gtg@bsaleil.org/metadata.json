@@ -1,5 +1,5 @@
 {
-	"shell-version": ["3.4"],
+	"shell-version": ["3.6"],
 	"uuid": "gtg@bsaleil.org",
 	"name": "GTG integration",
 	"description": "GTG integration with GNOME Shell",
