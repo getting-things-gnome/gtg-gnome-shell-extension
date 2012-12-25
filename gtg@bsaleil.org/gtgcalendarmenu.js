@@ -155,13 +155,18 @@ const GTGCalendarMenu = new Lang.Class({
 		else
 		{
 			dateFormat = _("%A, %B %d");
-        		strTitle = day.toLocaleFormat(dateFormat);
-        	}
-        	title = new PopupMenu.PopupMenuItem(strTitle, {reactive: false});
-        	title.actor.set_style("padding-top : 10px");
-        	// Check preferences
-        	if (prefs.SystemTheme)
+			strTitle = day.toLocaleFormat(dateFormat);
+		}
+		title = new PopupMenu.PopupMenuItem(strTitle, {reactive: false});
+		title.actor.set_style("padding-top : 10px");
+		// Check preferences
+		if (prefs.SystemTheme) {
+			title.actor.remove_style_class_name("popup-menu-item");
+			title.actor.remove_style_class_name("popup-inactive-menu-item");
+			title.actor.add_style_class_name("events-day-header");
+		} else {
 			title.actor.add_style_class_name("dayTitle");
+		}
 		
 		this.tasksBox.add(title.actor,{y_align: St.Align.START,y_fill: false});
 		actors.push(title);
@@ -274,28 +279,42 @@ const GTGCalendarMenu = new Lang.Class({
 		});		
 		
 		// Check preferences
-		if (multipleDayTask)
-			if (prefs.SystemTheme)
+		if (multipleDayTask) {
+			if (prefs.SystemTheme) {
+				taskItem.actor.set_style("padding-left:50px; color : #6e6e6e");
+				taskItem.actor.add_style_class_name("events-day-task");
+				
+			} else {
 				taskItem.actor.add_style_class_name("multipleDayTask");
-		else
-			if (prefs.SystemTheme)
+			}
+		} else {
+			if (prefs.SystemTheme) {
+				taskItem.actor.add_style_class_name("events-day-task");
+			} else {
 				taskItem.actor.add_style_class_name("task");
+			}
+		}
 		
 		this.tasksBox.add(taskItem.actor,{y_align: St.Align.START,y_fill: false});
 		actors.push(taskItem);
 	},
 	
+	// FIXME: Duplicated code
 	// Display a blocked item (non-clickable) with given string
 	displayBlockedItem: function(title)
 	{
 		let item = new PopupMenu.PopupMenuItem(title,{reactive:false});
 		item.actor.set_style("padding-left:50px");
 		
-		// Check preferences
-		if (prefs.SystemTheme)
+		if (prefs.SystemTheme) {
+			item.actor.remove_style_class_name("popup-menu-item");
+			item.actor.remove_style_class_name("popup-inactive-menu-item");
+			item.actor.add_style_class_name("events-day-task");
+		} else {
 			item.actor.add_style_class_name("task");
+		}
 		
-		this.tasksBox.add(item.actor,{y_align: St.Align.START,y_fill: false});		
+		this.tasksBox.add(item.actor,{y_align: St.Align.START,y_fill: false});
 		actors.push(item);
 	},
 	

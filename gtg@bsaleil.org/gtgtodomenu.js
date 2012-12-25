@@ -110,16 +110,22 @@ const GTGTodoMenu = new Lang.Class({
 		}
 	},
 	
+	// FIXME: Duplicated code
 	// Display a blocked item (non-clickable) with given string
 	displayBlockedItem: function(title)
 	{
 		let item = new PopupMenu.PopupMenuItem(title,{reactive:false});
+		item.actor.set_style("padding-left:50px");
 		
-		// Check preferences
-		if (prefs.SystemTheme)
+		if (prefs.SystemTheme) {
+			item.actor.remove_style_class_name("popup-menu-item");
+			item.actor.remove_style_class_name("popup-inactive-menu-item");
+			item.actor.add_style_class_name("events-day-task");
+		} else {
 			item.actor.add_style_class_name("task");
-			
-		this.todoBox.add(item.actor,{y_align: St.Align.START,y_fill: false});		
+		}
+		
+		this.tasksBox.add(item.actor,{y_align: St.Align.START,y_fill: false});
 		actors.push(item);
 	},
 	
@@ -134,9 +140,13 @@ const GTGTodoMenu = new Lang.Class({
 		let item = new PopupMenu.PopupMenuItem(title);
 		
 		// Check preferences
-		if (prefs.SystemTheme)
+		if (prefs.SystemTheme) {
+			item.actor.set_style("padding-left: 25px");
+			item.actor.add_style_class_name("events-day-task");
+		} else {
 			item.actor.add_style_class_name("task");
-			
+		}
+		
 		item.connect('activate', function() {
 			GTGDBus.openTaskEditor(task.id);
 			Main.panel.statusArea.dateMenu.menu.close();
