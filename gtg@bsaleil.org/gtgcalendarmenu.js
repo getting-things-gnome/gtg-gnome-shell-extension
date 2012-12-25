@@ -158,7 +158,6 @@ const GTGCalendarMenu = new Lang.Class({
 			strTitle = day.toLocaleFormat(dateFormat);
 		}
 		title = new PopupMenu.PopupMenuItem(strTitle, {reactive: false});
-		title.actor.set_style("padding-top : 10px");
 		// Check preferences
 		if (prefs.SystemTheme) {
 			title.actor.remove_style_class_name("popup-menu-item");
