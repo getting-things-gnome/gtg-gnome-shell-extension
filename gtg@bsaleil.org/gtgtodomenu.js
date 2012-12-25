@@ -125,7 +125,7 @@ const GTGTodoMenu = new Lang.Class({
 			item.actor.add_style_class_name("task");
 		}
 		
-		this.tasksBox.add(item.actor,{y_align: St.Align.START,y_fill: false});
+		this.todoBox.add(item.actor,{y_align: St.Align.START,y_fill: false});
 		actors.push(item);
 	},
 	
