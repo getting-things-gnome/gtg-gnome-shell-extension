@@ -15,3 +15,6 @@ msgstr "Megnyitás GTG"
 
 msgid "GTG is closed"
 msgstr "GTG is closed"
+
+msgid "To do"
+msgstr "To do"
