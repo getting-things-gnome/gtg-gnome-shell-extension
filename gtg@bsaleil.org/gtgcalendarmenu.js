@@ -270,7 +270,7 @@ const GTGCalendarMenu = new Lang.Class({
 			strTask = strTask.substr(0,LENGTHMAX) + "..."
 		
 		let taskItem = new PopupMenu.PopupMenuItem(strTask);
-		taskItem.actor.set_style("padding-left:50px;");
+		//taskItem.actor.set_style("padding-left:50px;");
 		
 		taskItem.connect('activate', function() {
 			GTGDBus.openTaskEditor(task.id);
@@ -280,7 +280,7 @@ const GTGCalendarMenu = new Lang.Class({
 		// Check preferences
 		if (multipleDayTask) {
 			if (prefs.SystemTheme) {
-				taskItem.actor.set_style("padding-left:50px; color : #6e6e6e");
+				taskItem.actor.set_style("font-style: italic");
 				taskItem.actor.add_style_class_name("events-day-task");
 				
 			} else {
@@ -303,7 +303,6 @@ const GTGCalendarMenu = new Lang.Class({
 	displayBlockedItem: function(title)
 	{
 		let item = new PopupMenu.PopupMenuItem(title,{reactive:false});
-		item.actor.set_style("padding-left:50px");
 		
 		if (prefs.SystemTheme) {
 			item.actor.remove_style_class_name("popup-menu-item");
@@ -461,3 +460,4 @@ function loadPreferences()
 	else
 		showSystemTasksList();
 }
+
