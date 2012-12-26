@@ -101,7 +101,7 @@ const GTGTodoMenu = new Lang.Class({
 			title.actor.remove_style_class_name("popup-inactive-menu-item");
 			title.actor.add_style_class_name("events-day-header");
 		} else {
-			title.actor.add_style_class_name("dayTitle");
+			title.actor.add_style_class_name("dayTitle-custom");
 		}
 		this.todoBox.add(title.actor,{y_align: St.Align.START,y_fill: false});
 		actors.push(title);
@@ -134,7 +134,7 @@ const GTGTodoMenu = new Lang.Class({
 			item.actor.remove_style_class_name("popup-inactive-menu-item");
 			item.actor.add_style_class_name("events-day-task");
 		} else {
-			item.actor.add_style_class_name("task");
+			item.actor.add_style_class_name("task-custom");
 		}
 		
 		this.todoBox.add(item.actor,{y_align: St.Align.START,y_fill: false});
@@ -155,7 +155,7 @@ const GTGTodoMenu = new Lang.Class({
 		if (prefs.SystemTheme) {
 			item.actor.add_style_class_name("events-day-task");
 		} else {
-			item.actor.add_style_class_name("task");
+			item.actor.add_style_class_name("task-custom");
 		}
 		
 		item.connect('activate', function() {
