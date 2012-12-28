@@ -263,7 +263,7 @@ const GTGCalendarMenu = new Lang.Class({
 	// Display a task on the menu
 	displayTask: function(task,multipleDayTask)
 	{
-		let strTask = task.title;
+		var strTask = task.title;
 		// Adjust length
 		if (strTask.length > LENGTHMAX)
 			strTask = strTask.substr(0,LENGTHMAX) + "..."
@@ -326,7 +326,7 @@ const GTGCalendarMenu = new Lang.Class({
 	// Compare two days : 0 if ==, 1 if >, -1 if <	  
 	compareDays: function (day1, day2)
 	{
-		let diff = day1.getTime()-day2.getTime();
+		var diff = day1.getTime()-day2.getTime();
 		return (diff==0?diff:diff/Math.abs(diff));
 	},
 	
@@ -354,7 +354,7 @@ const GTGCalendarMenu = new Lang.Class({
 	// Remove existings actors from the menu
 	removeActors: function()
 	{
-		for (let i = 0; i < actors.length; i++)
+		for (let i=0; i<actors.length; i++)
 		{
 			this.tasksBox.remove_actor(actors[i].actor);
 		}

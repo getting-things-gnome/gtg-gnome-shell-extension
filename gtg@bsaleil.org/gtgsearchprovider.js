@@ -38,12 +38,11 @@ const GTGSearchProvider = new Lang.Class({
 		GTGDBus.DBus.session.watch_name("org.gnome.GTG", false,
 			function() { running=true; loadTasks(); },
 			function() { running=false; loadTasks(); });
-		
 		return true;
 	},
 
-	getResultMetas: function(resultIds)
-	{	
+	getResultMetas: function(resultIds, callback)
+	{
 		let appSys = Shell.AppSystem.get_default();
 		let app = appSys.lookup_app("gtg.desktop");
 		var results = new Array();
@@ -53,7 +52,8 @@ const GTGSearchProvider = new Lang.Class({
 			'name': resultIds[i][1],
 			'createIcon': function(size) {return app.create_icon_texture(size);}});
 		}
-		return results;
+		//return results; // 3.4
+		callback(results);
 	},
 
 	activateResult: function(id)
@@ -63,10 +63,10 @@ const GTGSearchProvider = new Lang.Class({
 
 	getInitialResultSet: function(terms)
 	{
-		sTerms = terms.toString().replace(',','');
-		pattern = new RegExp(sTerms,"gi");
+		var sTerms = terms.toString().replace(',','');
+		var pattern = new RegExp(sTerms,"gi");
 	
-		results = new Array();
+		var results = new Array();
 		for (var i in allTasks)
 		{
 			// Search in title and text
@@ -75,15 +75,17 @@ const GTGSearchProvider = new Lang.Class({
 		
 			if (s.match(pattern))
 			{
-				result = [allTasks[i].id, allTasks[i].title];
+				var result = [allTasks[i].id, allTasks[i].title];
 				results.push(result);
 			}
 		}
-		return results;
+		// return results; // 3.4
+		this.searchSystem.pushResults(this, results);
 	},
 
 	getSubsearchResultSet: function(previousResults, terms)
 	{
+		//return this.getInitialResultSet(terms);
 		return this.getInitialResultSet(terms);
 	},
 	

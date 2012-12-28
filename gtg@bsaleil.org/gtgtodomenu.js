@@ -91,7 +91,7 @@ const GTGTodoMenu = new Lang.Class({
 	displayTodos: function()
 	{
 		// Remove actual actors
-		for (let i = 0; i < actors.length; i++)
+		for (let i=0; i<actors.length; i++)
 			this.todoBox.remove_actor(actors[i].actor);
 		
 		let title = new PopupMenu.PopupMenuItem(_("To do"), {reactive: false});
