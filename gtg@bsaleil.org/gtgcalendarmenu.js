@@ -304,7 +304,6 @@ const GTGCalendarMenu = new Lang.Class({
 		let item = new PopupMenu.PopupMenuItem(title,{reactive:false});
 		
 		if (prefs.SystemTheme) {
-			item.actor.remove_style_class_name("popup-menu-item");
 			item.actor.remove_style_class_name("popup-inactive-menu-item");
 			item.actor.add_style_class_name("events-day-task");
 		} else {
