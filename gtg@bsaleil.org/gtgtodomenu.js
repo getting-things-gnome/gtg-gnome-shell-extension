@@ -11,6 +11,8 @@ const Extension = ExtensionUtils.getCurrentExtension();
 const GTGCalendarMenu = Extension.imports.gtgcalendarmenu;
 const GTGDBus = Extension.imports.gtgdbus;
 const Preferences = Extension.imports.prefs;
+const Gettext = imports.gettext;
+const _ = Gettext.domain('gtgextension').gettext;
 
 const LENGTHMAX = 40; // Maximum length of a displayed task
 
@@ -24,6 +26,9 @@ const GTGTodoMenu = new Lang.Class({
 
 	_init: function()
 	{
+		let locales = Extension.dir.get_path() + "/locale";
+		Gettext.bindtextdomain('gtgextension', locales);
+		
 		// Load tasks
 		allTasks = new Array();
 		loadTasks();
@@ -62,8 +67,7 @@ const GTGTodoMenu = new Lang.Class({
 		
 		// Scroll view
 		this.scrollView = new St.ScrollView({style_class: 'vfade',
-                                          hscrollbar_policy: Gtk.PolicyType.NEVER,
-                                          vscrollbar_policy: Gtk.PolicyType.ALWAYS});
+                                          hscrollbar_policy: Gtk.PolicyType.NEVER});
 		this.scrollView.add_actor(this.todoBox);
 		calendar.add_actor(this.scrollView);
 		
@@ -89,37 +93,49 @@ const GTGTodoMenu = new Lang.Class({
 		// Remove actual actors
 		for (let i=0; i<actors.length; i++)
 			this.todoBox.remove_actor(actors[i].actor);
-
-		// Display tasks only if gtg is running
-		if (!running)
-		{
-			this.displayBlockedItem("GTG is closed");
+		
+		let title = new PopupMenu.PopupMenuItem(_("To do"), {reactive: false});
+		if (prefs.SystemTheme) {
+			title.actor.remove_style_class_name("popup-menu-item");
+			title.actor.remove_style_class_name("popup-inactive-menu-item");
+			title.actor.add_style_class_name("events-day-header");
+		} else {
+			title.actor.add_style_class_name("dayTitle-custom");
 		}
-		else
-		{	
+		this.todoBox.add(title.actor,{y_align: St.Align.START,y_fill: false});
+		actors.push(title);
+		
+		// Display tasks only if gtg is running
+		if (!running) {
+			this.displayBlockedItem(_("GTG is closed"));
+		} else {
 			// Display all tasks without start and due date
 			var nbTasks = 0;
-			for (i=0; i<allTasks.length; i++)
+			for (let i = 0; i < allTasks.length; i++)
 				if (allTasks[i].startdate == "" && allTasks[i].duedate == "")
 				{
 					this.displayTodo(allTasks[i]);
 					nbTasks++;
 				}
 			if (nbTasks < 1)
-				this.displayBlockedItem("Nothing");
+				this.displayBlockedItem(_("Nothing Scheduled"));
 		}
 	},
 	
+	// FIXME: Duplicated code
 	// Display a blocked item (non-clickable) with given string
 	displayBlockedItem: function(title)
 	{
 		let item = new PopupMenu.PopupMenuItem(title,{reactive:false});
 		
-		// Check preferences
-		if (prefs.SystemTheme)
-			item.actor.add_style_class_name("task");
-			
-		this.todoBox.add(item.actor,{y_align: St.Align.START,y_fill: false});		
+		if (prefs.SystemTheme) {
+			item.actor.remove_style_class_name("popup-inactive-menu-item");
+			item.actor.add_style_class_name("events-day-task");
+		} else {
+			item.actor.add_style_class_name("task-custom");
+		}
+		
+		this.todoBox.add(item.actor,{y_align: St.Align.START,y_fill: false});
 		actors.push(item);
 	},
 	
@@ -134,9 +150,12 @@ const GTGTodoMenu = new Lang.Class({
 		let item = new PopupMenu.PopupMenuItem(title);
 		
 		// Check preferences
-		if (prefs.SystemTheme)
-			item.actor.add_style_class_name("task");
-			
+		if (prefs.SystemTheme) {
+			item.actor.add_style_class_name("events-day-task");
+		} else {
+			item.actor.add_style_class_name("task-custom");
+		}
+		
 		item.connect('activate', function() {
 			GTGDBus.openTaskEditor(task.id);
 			Main.panel.statusArea.dateMenu.menu.close();
