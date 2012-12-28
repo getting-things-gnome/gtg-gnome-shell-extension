@@ -72,8 +72,7 @@ const GTGCalendarMenu = new Lang.Class({
 		
 		// Scroll view
 		this.scrollView = new St.ScrollView({style_class: 'vfade',
-                                          hscrollbar_policy: Gtk.PolicyType.NEVER,
-                                          vscrollbar_policy: Gtk.PolicyType.ALWAYS});
+                                          hscrollbar_policy: Gtk.PolicyType.NEVER});
 		this.scrollView.add_actor(this.mainBox);
 		this.mainBox.add_actor(this.scrollView, {expand: true});
 		
