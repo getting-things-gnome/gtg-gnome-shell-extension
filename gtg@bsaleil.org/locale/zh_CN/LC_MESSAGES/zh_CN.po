@@ -14,4 +14,4 @@ msgid "Open GTG"
 msgstr "打开 GTG"
 
 msgid "GTG is closed"
-msgstr "GTG is closed"
+msgstr "还没打开GTG"
