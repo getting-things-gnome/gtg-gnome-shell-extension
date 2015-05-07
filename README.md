@@ -1,14 +1,30 @@
 #GTG integration with GNOME Shell
 
-The integration of GTG with GNOME Shell was a 2012 Summer of Code project realized by Baptiste Saleil.  
-Homepage : [GNOME Live](https://live.gnome.org/SummerOfCode2012/Projects/BaptisteSaleil_GTG_GNOME_Shell)  
-Repository : [bsaleil on Github](https://github.com/bsaleil)  
-Blog : [Project blog](http://bsaleil.org/blog/)  
+The integration of GTG with GNOME Shell was a 2012 Summer of Code project realized by [Baptiste Saleil](https://github.com/bsaleil).
+
+ - [extension page](https://extensions.gnome.org/extension/409/gtg-integration/)
+ - [Summer of Code project page](https://wiki.gnome.org/Outreach/SummerOfCode/2012/Projects/BaptisteSaleil_GTG_GNOME_Shell)
+ - created by [Baptiste Saleil](https://github.com/bsaleil)
 
 ##Installation
 
-This extension is available on GNOME Shell extensions website with the name "GTG Integration". To install it, you can simply go to the website, search for the extension, change the switch button to "ON", and accept download. It is now installed.
-This extension bring many features described in next section.
+Automatically from extensions repository:
+
+ 1. Visit [GTG Integration](https://extensions.gnome.org/extension/409/gtg-integration/) extension page
+ 2. Change the switch button to `ON` and accept download.
+
+### Manuall installation
+
+Extension can be installed from git:
+
+```
+mkdir ~/code
+git clone https://github.com/getting-things-gnome/gtg-gnome-shell-extension.git ~/code/gtg-gnome-shell-extension
+mkdir -p ~/.local/share/gnome-shell/extensions
+ln -s ~/code/gtg-gnome-shell-extension/gtg@bsaleil.org ~/.local/share/gnome-shell/extensions/gtg@bsaleil.org
+```
+
+Afterwards restart GNOME Shell by pressing `ALT+F2` and running command `r`.
 
 ##Usage
 
@@ -43,5 +59,3 @@ By this way, every tasks are listed to user.
 ###Preferences
 
 ![Preferences](https://raw.githubusercontent.com/getting-things-gnome/gtg-gnome-shell-extension/master/documents/guadec/prefs.png "Preferences")
-
-TODO
