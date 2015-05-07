@@ -3,5 +3,5 @@
 	"uuid": "gtg@bsaleil.org",
 	"name": "GTG integration",
 	"description": "GTG integration with GNOME Shell",
-	"url": "https://github.com/bsaleil/gtg-gnome-shell-extension"
+	"url": "https://github.com/getting-things-gnome/gtg-gnome-shell-extension"
 }
