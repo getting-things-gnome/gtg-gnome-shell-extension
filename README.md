@@ -14,7 +14,7 @@ This extension bring many features described in next section.
 
 ###Search in overview
 
-![alt text](http://bsaleil.org/blog/wp-content/uploads/2012/07/search.png "Search in overview")
+![Search in overview](https://raw.githubusercontent.com/getting-things-gnome/gtg-gnome-shell-extension/master/documents/guadec/search.png "Search in overview")
 
 This feature is simple to use.
 Open the overview by pressing "super" key or move your mouse on top left corner or click on "Activities" button, type some letters to search in your tasks, and the extension will displays results.
@@ -22,7 +22,7 @@ The task editor will be open if you click on a task.
 
 ###Calendar menu
 
-![alt text](http://bsaleil.org/blog/wp-content/uploads/2012/07/calendar.png "Calendar Menu")
+![Calendar Menu](https://raw.githubusercontent.com/getting-things-gnome/gtg-gnome-shell-extension/master/documents/guadec/calendar.png "Calendar Menu")
 
 The second feature bring with the extension is the calendar menu which can be open by clicking on the date in the topbar.
 For now, the GTG calendar menu will replace the existing, synchornization of both is planned for the future.
@@ -42,6 +42,6 @@ By this way, every tasks are listed to user.
 
 ###Preferences
 
-![alt text](http://bsaleil.org/blog/wp-content/uploads/2012/07/preferences.png "Preferences")
+![Preferences](https://raw.githubusercontent.com/getting-things-gnome/gtg-gnome-shell-extension/master/documents/guadec/prefs.png "Preferences")
 
 TODO
